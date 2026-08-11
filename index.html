@@ -48,6 +48,54 @@
   }
   .sub{color:var(--ink-soft);font-size:14px;margin:0;}
 
+  /* auth bar */
+  .authbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px 12px;
+    margin-top:14px;
+    font-size:13px;
+  }
+  .authbar .msg{color:var(--ink-soft);}
+  .google-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--ink);
+    color:var(--bg);
+    border:none;
+    border-radius:8px;
+    padding:8px 14px;
+    font-size:13px;
+    font-family:'Noto Sans TC',sans-serif;
+    cursor:pointer;
+  }
+  .google-btn svg{width:16px;height:16px;flex-shrink:0;}
+  .user-chip{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .user-chip img{width:26px;height:26px;border-radius:50%;}
+  .user-chip .uname{font-weight:600;font-size:13px;}
+  .signout-btn{
+    font-size:12px;
+    color:var(--ink-soft);
+    background:none;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:6px 10px;
+    cursor:pointer;
+  }
+  .signout-btn:hover{background:var(--done-bg);}
+  .sync-note{font-size:11px;color:var(--ink-soft);}
+  .sync-note.err{color:var(--kcal);}
+
   /* day tabs */
   .tabs{
     display:grid;
@@ -182,6 +230,10 @@
     <p class="eyebrow">增肌飲食計畫 · 178cm / 82kg</p>
     <h1>今天吃了嗎?</h1>
     <p class="sub">點項目打勾記錄,自動累計蛋白質與熱量進度</p>
+
+    <div class="authbar" id="authbar">
+      <span class="msg">正在連線...</span>
+    </div>
   </header>
 
   <div class="tabs" id="tabs"></div>
@@ -207,7 +259,35 @@
   </footer>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, doc, getDoc, setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// ⚠️ 這組設定是根據你先前貼過來、已經亂碼的內容「猜測還原」的。
+// 如果登入或雲端同步一直失敗，第一件事就是回 Firebase Console → 專案設定 → 你的網頁應用程式，
+// 把完整正確的 firebaseConfig 複製貼給我，我再改一次。
+const firebaseConfig = {
+  apiKey: "AIzaSyCDpIa8nq9j7kC9EpbWIJCzY3moM1MSz2o",
+  authDomain: "projerct-d29a6.firebaseapp.com",
+  projectId: "projerct-d29a6",
+  storageBucket: "projerct-d29a6.firebasestorage.app",
+  messagingSenderId: "721257579244",
+  appId: "1:721257579244:web:3c8d051d43e49c0b415bc9",
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const auth = getAuth(firebaseApp);
+const provider = new GoogleAuthProvider();
+
+let currentUser = null;
+let hasLoadedCloudState = false; // guards against saving empty state before cloud load finishes
+
 const TRAIN_ITEMS = [
   {meal:"早餐", items:[
     {name:"全蛋", qty:"3顆", p:21, k:220},
@@ -340,6 +420,7 @@ function renderMeals(){
       li.onclick = ()=>{
         if(checked.has(key)) checked.delete(key); else checked.add(key);
         renderAll();
+        saveCloudState();
       };
       ul.appendChild(li);
     });
@@ -376,8 +457,93 @@ function renderAll(){
 document.getElementById('resetBtn').onclick = ()=>{
   checkedState[activeDay] = new Set();
   renderAll();
+  saveCloudState();
 };
 
+// ---------- Auth + cloud sync ----------
+
+function renderAuthBar(syncMsg){
+  const bar = document.getElementById('authbar');
+  if(currentUser){
+    bar.innerHTML = `
+      <div class="user-chip">
+        <img src="${currentUser.photoURL || ''}" alt="">
+        <span class="uname">${currentUser.displayName || currentUser.email || '已登入'}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="sync-note${syncMsg && syncMsg.err ? ' err' : ''}">${syncMsg ? syncMsg.text : '已同步到雲端'}</span>
+        <button class="signout-btn" id="signOutBtn">登出</button>
+      </div>
+    `;
+    document.getElementById('signOutBtn').onclick = ()=> signOut(auth);
+  } else {
+    bar.innerHTML = `
+      <span class="msg">${syncMsg && syncMsg.err ? syncMsg.text : '登入 Google 帳號，打勾自動存雲端、換裝置也讀得回來'}</span>
+      <button class="google-btn" id="googleBtn">
+        <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.5 29.6 4.5 24 4.5 12.7 4.5 3.5 13.7 3.5 25S12.7 45.5 24 45.5 44.5 36.3 44.5 25c0-1.6-.2-3-.9-4.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.6 18.9 12.5 24 12.5c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.5 29.6 4.5 24 4.5c-7.4 0-13.8 4.2-17 10.2z"/><path fill="#4CAF50" d="M24 45.5c5.5 0 10.4-1.9 14.2-5.1l-6.6-5.4C29.6 36.6 27 37.5 24 37.5c-5.3 0-9.7-3.3-11.3-8l-6.6 5.1C9.9 40.9 16.4 45.5 24 45.5z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.6 5.4C40.6 36.6 44.5 31.3 44.5 25c0-1.6-.2-3-.9-4.5z"/></svg>
+        使用 Google 登入
+      </button>
+    `;
+    document.getElementById('googleBtn').onclick = ()=>{
+      signInWithPopup(auth, provider).catch(err=>{
+        console.error("Google 登入失敗:", err);
+        renderAuthBar({text:'登入失敗，請再試一次(' + err.code + ')', err:true});
+      });
+    };
+  }
+}
+
+function userDocRef(){
+  return doc(db, "dietTrackerUsers", currentUser.uid);
+}
+
+async function loadCloudState(){
+  hasLoadedCloudState = false;
+  try{
+    const snap = await getDoc(userDocRef());
+    if(snap.exists()){
+      const data = snap.data();
+      DAYS.forEach((_,i)=>{
+        checkedState[i] = new Set(data['day'+i] || []);
+      });
+    } else {
+      DAYS.forEach((_,i)=> checkedState[i] = new Set());
+    }
+    hasLoadedCloudState = true;
+    renderAuthBar();
+  }catch(e){
+    console.error("讀取雲端資料失敗:", e);
+    renderAuthBar({text:'讀取雲端資料失敗，暫時只存在本機', err:true});
+  }
+  renderAll();
+}
+
+async function saveCloudState(){
+  if(!currentUser || !hasLoadedCloudState) return; // 未登入或還沒載入完成前不寫入，避免用空資料覆蓋雲端
+  try{
+    const payload = {};
+    DAYS.forEach((_,i)=> payload['day'+i] = Array.from(checkedState[i]));
+    await setDoc(userDocRef(), payload);
+    renderAuthBar();
+  }catch(e){
+    console.error("寫入雲端資料失敗:", e);
+    renderAuthBar({text:'儲存到雲端失敗，請檢查網路或稍後再試', err:true});
+  }
+}
+
+onAuthStateChanged(auth, (user)=>{
+  currentUser = user;
+  if(user){
+    loadCloudState();
+  } else {
+    hasLoadedCloudState = false;
+    DAYS.forEach((_,i)=> checkedState[i] = new Set());
+    renderAuthBar();
+    renderAll();
+  }
+});
+
+renderAuthBar();
 renderAll();
 </script>
 </body>
