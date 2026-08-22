@@ -997,8 +997,10 @@ function renderAuthBar(syncMsg){
 
 function logDocRef(dateStr){ return doc(db, "dietTrackerUsers", currentUser.uid, "logs", dateStr); }
 
+const loadedFromCloud = new Set();
 async function loadLogFor(dateStr){
-  if(!currentUser || logs[dateStr]) { renderAll(); return; }
+  if(!currentUser) { renderAll(); return; }
+  if(loadedFromCloud.has(dateStr)) { renderAll(); return; }
   try{
     const snap = await getDoc(logDocRef(dateStr));
     if(snap.exists()){
@@ -1007,6 +1009,7 @@ async function loadLogFor(dateStr){
     } else {
       ensureLog(dateStr);
     }
+    loadedFromCloud.add(dateStr);
   }catch(e){ console.error("讀取當日紀錄失敗:", e); }
   renderAll();
 }
