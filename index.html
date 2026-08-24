@@ -19,6 +19,7 @@
     --water: #2E76B6;
     --train: #2B6E63;
     --rest: #8A7F6A;
+    --cardio: #C97A3D;
     --done-bg: #F0EDE3;
   }
   *{box-sizing:border-box;}
@@ -77,6 +78,7 @@
   .tab.active .d, .tab.active .k, .tab.active .dt{color:var(--bg);}
   .tab.active.train{background:var(--train);border-color:var(--train);}
   .tab.active.rest{background:var(--rest);border-color:var(--rest);}
+  .tab.active.cardio{background:var(--cardio);border-color:var(--cardio);}
   .tab.today::after{content:"";position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--kcal);}
 
   .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:6px;}
@@ -102,6 +104,7 @@
   .daytype-btn:hover{background:var(--done-bg);}
   .daytype-btn.active.rest{background:var(--rest);border-color:var(--rest);color:#fff;}
   .daytype-btn.active.train{background:var(--train);border-color:var(--train);color:#fff;}
+  .daytype-btn.active.cardio{background:var(--cardio);border-color:var(--cardio);color:#fff;}
   .daytype-reset{background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:11px;cursor:pointer;color:var(--ink-soft);display:none;}
   .daytype-reset:hover{background:var(--done-bg);}
 
@@ -206,6 +209,7 @@
   .day-type-badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;color:#fff;}
   .day-type-badge.train{background:var(--train);}
   .day-type-badge.rest{background:var(--rest);}
+  .day-type-badge.cardio{background:var(--cardio);}
 
   /* calendar page */
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:5px;}
@@ -262,6 +266,12 @@
           <div><label>熱量(kcal)</label><input type="number" id="set_rest_k"></div>
           <div><label>脂肪(g)</label><input type="number" id="set_rest_f"></div>
         </div>
+        <div class="settings-group-label">有氧日目標(固定值)</div>
+        <div class="settings-grid">
+          <div><label>蛋白質(g)</label><input type="number" id="set_cardio_p"></div>
+          <div><label>熱量(kcal)</label><input type="number" id="set_cardio_k"></div>
+          <div><label>脂肪(g)</label><input type="number" id="set_cardio_f"></div>
+        </div>
       </div>
 
       <div class="settings-block" id="autoBlock">
@@ -276,6 +286,12 @@
           <div><label>蛋白質(g/kg)</label><input type="number" step="0.1" id="auto_rest_p"></div>
           <div><label>熱量(kcal/kg)</label><input type="number" step="0.5" id="auto_rest_k"></div>
           <div><label>脂肪(g/kg)</label><input type="number" step="0.1" id="auto_rest_f"></div>
+        </div>
+        <div class="settings-group-label">有氧日係數(每公斤體重)</div>
+        <div class="settings-grid">
+          <div><label>蛋白質(g/kg)</label><input type="number" step="0.1" id="auto_cardio_p"></div>
+          <div><label>熱量(kcal/kg)</label><input type="number" step="0.5" id="auto_cardio_k"></div>
+          <div><label>脂肪(g/kg)</label><input type="number" step="0.1" id="auto_cardio_f"></div>
         </div>
         <div class="settings-hint">會用「當天或最近一次」記錄的體重去乘上面的係數。還沒記錄過體重時,用下面的預設體重計算:</div>
         <div class="default-weight-row">
@@ -308,6 +324,7 @@
       <div class="daytype-btns">
         <button class="daytype-btn" id="dtRestBtn">休息日</button>
         <button class="daytype-btn" id="dtTrainBtn">訓練日</button>
+        <button class="daytype-btn" id="dtCardioBtn">有氧日</button>
         <button class="daytype-reset" id="dtResetBtn" title="還原成依星期判斷的預設值">還原預設</button>
       </div>
     </div>
@@ -632,12 +649,14 @@ const WEEKDAY_LABEL = ['日','一','二','三','四','五','六'];
 let SETTINGS = {
   mode: 'manual',
   manualTargets: {
-    train: {p:170, k:3000, f:85},
-    rest:  {p:155, k:2800, f:78},
+    train:  {p:170, k:3000, f:85},
+    rest:   {p:155, k:2800, f:78},
+    cardio: {p:160, k:3000, f:82},
   },
   autoMultipliers: {
-    train: {p:2.2, k:36, f:1.0},
-    rest:  {p:2.0, k:33, f:0.9},
+    train:  {p:2.2, k:36, f:1.0},
+    rest:   {p:2.0, k:33, f:0.9},
+    cardio: {p:2.0, k:35, f:0.95},
   },
   defaultWeight: 82,
 };
@@ -649,6 +668,8 @@ function toDateStr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.
 function parseDateStr(s){ const [y,m,dd] = s.split('-').map(Number); return new Date(y, m-1, dd); }
 function todayStr(){ return toDateStr(new Date()); }
 function typeOfDate(dateStr){ return WEEKDAY_TYPE[parseDateStr(dateStr).getDay()]; }
+function typeLabel(type){ return type==='train' ? '訓練日' : (type==='cardio' ? '有氧日' : '休息日'); }
+function typeLabelShort(type){ return type==='train' ? '訓練' : (type==='cardio' ? '有氧' : '休息'); }
 function getMonday(d){
   const day = d.getDay();
   const diff = (day===0? -6 : 1-day);
@@ -685,7 +706,7 @@ function computeTargetsForDate(dateStr, forcedType){
 let activeDate = todayStr();
 let weekOffset = 0;
 
-// logs[dateStr] = {checked:Set, water:number, alts:{}, portions:{"mi-ii":數字倍數}, custom:[{id,name,p,k,f}], typeOverride:null|'train'|'rest'}
+// logs[dateStr] = {checked:Set, water:number, alts:{}, portions:{"mi-ii":數字倍數}, custom:[{id,name,p,k,f}], typeOverride:null|'train'|'rest'|'cardio'}
 const logs = {};
 function ensureLog(dateStr){
   if(!logs[dateStr]) logs[dateStr] = {checked:new Set(), water:0, alts:{}, portions:{}, custom:[], typeOverride:null};
@@ -751,7 +772,7 @@ function renderTabs(){
     const type = resolveType(ds);
     const el = document.createElement('div');
     el.className = 'tab' + (ds===activeDate ? ' active '+type : '') + (ds===today ? ' today' : '');
-    el.innerHTML = `<span class="d">${WEEKDAY_LABEL[d.getDay()]}</span><span class="dt">${pad(d.getMonth()+1)}/${pad(d.getDate())}</span><span class="k">${type==='train'?'訓練':'休息'}</span>`;
+    el.innerHTML = `<span class="d">${WEEKDAY_LABEL[d.getDay()]}</span><span class="dt">${pad(d.getMonth()+1)}/${pad(d.getDate())}</span><span class="k">${typeLabelShort(type)}</span>`;
     el.onclick = ()=>{ activeDate = ds; renderAll(); loadLogFor(ds); };
     tabsEl.appendChild(el);
   });
@@ -804,7 +825,7 @@ async function renderWeekCardsPage(){
     <div class="sub-cat">
       <div class="sub-cat-head${isToday?' today-head':''}">
         <span>${pad(r.d.getMonth()+1)}/${pad(r.d.getDate())}(週${WEEKDAY_LABEL[r.d.getDay()]})${isToday?' · 今天':''}</span>
-        <span class="day-type-badge ${type}">${type==='train'?'訓練日':'休息日'}</span>
+        <span class="day-type-badge ${type}">${typeLabel(type)}</span>
       </div>
       <table class="subtable">
         <tbody>
@@ -1074,22 +1095,25 @@ function renderStats(){
   document.getElementById('waterNum').textContent = log.water;
 
   const d = parseDateStr(activeDate);
+  const rt = resolveType(activeDate);
   document.getElementById('footNote').textContent =
-    `${d.getMonth()+1}/${d.getDate()}(週${WEEKDAY_LABEL[d.getDay()]})・` + (resolveType(activeDate)==='train' ? '訓練日菜單' : '休息日菜單');
+    `${d.getMonth()+1}/${d.getDate()}(週${WEEKDAY_LABEL[d.getDay()]})・` + typeLabel(rt) + (rt==='cardio' ? '(套用休息日菜單)' : '菜單');
 }
 
 function renderDayTypeCard(){
   const log = ensureLog(activeDate);
   const weekdayType = typeOfDate(activeDate);
   const effective = log.typeOverride || weekdayType;
-  document.getElementById('daytypeCurrent').textContent = effective==='train' ? '訓練日' : '休息日';
+  document.getElementById('daytypeCurrent').textContent = typeLabel(effective);
   document.getElementById('dtRestBtn').classList.toggle('active', effective==='rest');
   document.getElementById('dtRestBtn').classList.toggle('rest', true);
   document.getElementById('dtTrainBtn').classList.toggle('active', effective==='train');
   document.getElementById('dtTrainBtn').classList.toggle('train', true);
+  document.getElementById('dtCardioBtn').classList.toggle('active', effective==='cardio');
+  document.getElementById('dtCardioBtn').classList.toggle('cardio', true);
   const isOverridden = !!log.typeOverride && log.typeOverride!==weekdayType;
   document.getElementById('daytypeDefaultNote').textContent =
-    isOverridden ? `(預設是${weekdayType==='train'?'訓練日':'休息日'},已手動切換)` : '(依星期預設)';
+    isOverridden ? `(預設是${typeLabel(weekdayType)},已手動切換)` : '(依星期預設)';
   document.getElementById('dtResetBtn').style.display = isOverridden ? '' : 'none';
 }
 
@@ -1102,6 +1126,7 @@ function setDayType(type){
 }
 document.getElementById('dtRestBtn').onclick = ()=> setDayType('rest');
 document.getElementById('dtTrainBtn').onclick = ()=> setDayType('train');
+document.getElementById('dtCardioBtn').onclick = ()=> setDayType('cardio');
 document.getElementById('dtResetBtn').onclick = ()=>{
   const log = ensureLog(activeDate);
   log.typeOverride = null;
@@ -1143,12 +1168,18 @@ function fillSettingsForm(){
   document.getElementById('set_rest_p').value = SETTINGS.manualTargets.rest.p;
   document.getElementById('set_rest_k').value = SETTINGS.manualTargets.rest.k;
   document.getElementById('set_rest_f').value = SETTINGS.manualTargets.rest.f;
+  document.getElementById('set_cardio_p').value = SETTINGS.manualTargets.cardio.p;
+  document.getElementById('set_cardio_k').value = SETTINGS.manualTargets.cardio.k;
+  document.getElementById('set_cardio_f').value = SETTINGS.manualTargets.cardio.f;
   document.getElementById('auto_train_p').value = SETTINGS.autoMultipliers.train.p;
   document.getElementById('auto_train_k').value = SETTINGS.autoMultipliers.train.k;
   document.getElementById('auto_train_f').value = SETTINGS.autoMultipliers.train.f;
   document.getElementById('auto_rest_p').value = SETTINGS.autoMultipliers.rest.p;
   document.getElementById('auto_rest_k').value = SETTINGS.autoMultipliers.rest.k;
   document.getElementById('auto_rest_f').value = SETTINGS.autoMultipliers.rest.f;
+  document.getElementById('auto_cardio_p').value = SETTINGS.autoMultipliers.cardio.p;
+  document.getElementById('auto_cardio_k').value = SETTINGS.autoMultipliers.cardio.k;
+  document.getElementById('auto_cardio_f').value = SETTINGS.autoMultipliers.cardio.f;
   document.getElementById('set_default_weight').value = SETTINGS.defaultWeight;
 }
 document.getElementById('saveSettingsBtn').onclick = async ()=>{
@@ -1165,6 +1196,11 @@ document.getElementById('saveSettingsBtn').onclick = async ()=>{
         k: Number(document.getElementById('set_rest_k').value)||SETTINGS.manualTargets.rest.k,
         f: Number(document.getElementById('set_rest_f').value)||SETTINGS.manualTargets.rest.f,
       },
+      cardio: {
+        p: Number(document.getElementById('set_cardio_p').value)||SETTINGS.manualTargets.cardio.p,
+        k: Number(document.getElementById('set_cardio_k').value)||SETTINGS.manualTargets.cardio.k,
+        f: Number(document.getElementById('set_cardio_f').value)||SETTINGS.manualTargets.cardio.f,
+      },
     },
     autoMultipliers: {
       train: {
@@ -1176,6 +1212,11 @@ document.getElementById('saveSettingsBtn').onclick = async ()=>{
         p: Number(document.getElementById('auto_rest_p').value)||SETTINGS.autoMultipliers.rest.p,
         k: Number(document.getElementById('auto_rest_k').value)||SETTINGS.autoMultipliers.rest.k,
         f: Number(document.getElementById('auto_rest_f').value)||SETTINGS.autoMultipliers.rest.f,
+      },
+      cardio: {
+        p: Number(document.getElementById('auto_cardio_p').value)||SETTINGS.autoMultipliers.cardio.p,
+        k: Number(document.getElementById('auto_cardio_k').value)||SETTINGS.autoMultipliers.cardio.k,
+        f: Number(document.getElementById('auto_cardio_f').value)||SETTINGS.autoMultipliers.cardio.f,
       },
     },
     defaultWeight: Number(document.getElementById('set_default_weight').value)||SETTINGS.defaultWeight,
@@ -1441,7 +1482,11 @@ onAuthStateChanged(auth, async (user)=>{
     try{
       const mainSnap = await getDoc(doc(db,"dietTrackerUsers",user.uid));
       if(mainSnap.exists() && mainSnap.data().settings){
-        SETTINGS = Object.assign({}, SETTINGS, mainSnap.data().settings);
+        const cloudSettings = mainSnap.data().settings;
+        SETTINGS = Object.assign({}, SETTINGS, cloudSettings, {
+          manualTargets: Object.assign({}, SETTINGS.manualTargets, cloudSettings.manualTargets),
+          autoMultipliers: Object.assign({}, SETTINGS.autoMultipliers, cloudSettings.autoMultipliers),
+        });
       }
     }catch(e){ console.error("讀取設定失敗:", e); }
     renderAuthBar();
