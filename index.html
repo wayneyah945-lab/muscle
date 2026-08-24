@@ -324,9 +324,15 @@
 
     <div class="custom-section">
       <h3>其他 / 自訂項目</h3>
-      <p class="custom-hint">吃了菜單以外的東西?填入蛋白質/熱量/脂肪,按下方按鈕直接打卡計入今天的量。</p>
+      <p class="custom-hint">輸入食物名稱,如果是資料庫裡有的食物(替代食物表 + 菜單裡出現過的)會自動幫你換算蛋白質/熱量/脂肪;找不到的話手動填三個數字也可以,填完按下方按鈕直接打卡。</p>
       <div class="custom-form">
-        <input type="text" id="customName" placeholder="食物名稱(例如:超商御飯糰)">
+        <input type="text" id="customName" list="customFoodList" placeholder="食物名稱(例如:雞胸肉)" autocomplete="off">
+        <datalist id="customFoodList"></datalist>
+        <div id="customMatchHint" class="custom-hint" style="display:none;margin:-4px 0 8px;"></div>
+        <div class="custom-form-grid" style="grid-template-columns:1fr 2fr;">
+          <div><label>份量倍數</label><input type="number" step="0.25" min="0" id="customQty" value="1"></div>
+          <div><label>&nbsp;</label><div style="font-size:11px;color:var(--ink-soft);padding-top:6px;">比對到資料庫食物時,下面三個數字會自動依倍數換算,也可以再手動微調</div></div>
+        </div>
         <div class="custom-form-grid">
           <div><label>蛋白質(g)</label><input type="number" step="0.1" min="0" id="customP" placeholder="0"></div>
           <div><label>熱量(kcal)</label><input type="number" step="1" min="0" id="customK" placeholder="0"></div>
@@ -516,7 +522,24 @@ const SUBSTITUTE_FOODS = [
     {name:"香蕉", qty:"1根(約100g)", p:1, k:89, f:0.3},
     {name:"蘋果", qty:"1顆(約180g)", p:0.5, k:95, f:0.3},
   ]},
+  {cat:"常見外食 / 早餐店", rows:[
+    {name:"蛋餅", qty:"1份(約150g,原味)", p:8, k:280, f:14},
+    {name:"三明治(火腿蛋)", qty:"1份(約200g)", p:15, k:350, f:14},
+    {name:"可頌", qty:"1個(約60g)", p:5, k:270, f:14},
+    {name:"披薩(起司)", qty:"1片(約100g)", p:11, k:270, f:10},
+  ]},
 ];
+
+// ---------- 自訂項目用的食物名稱對照表(合併替代食物表 + 訓練/休息菜單裡出現過的所有食物) ----------
+const FOOD_LOOKUP = {};
+SUBSTITUTE_FOODS.forEach(cat=> cat.rows.forEach(r=>{
+  if(!FOOD_LOOKUP[r.name]) FOOD_LOOKUP[r.name] = {qty:r.qty, p:r.p, k:r.k, f:r.f};
+}));
+[...TRAIN_ITEMS, ...REST_ITEMS].forEach(mg=> mg.items.forEach(it=> it.variants.forEach(vr=>{
+  if(!FOOD_LOOKUP[vr.name]) FOOD_LOOKUP[vr.name] = {qty:vr.qty, p:vr.p, k:vr.k, f:vr.f};
+})));
+document.getElementById('customFoodList').innerHTML =
+  Object.keys(FOOD_LOOKUP).map(n=>`<option value="${n}"></option>`).join('');
 
 function renderSubstitutePage(){
   const container = document.getElementById('subCatContainer');
@@ -924,6 +947,32 @@ function renderCustomSection(){
   });
 }
 
+// ---------- 自訂項目:輸入名稱自動比對食物資料庫並換算 ----------
+const customNameEl = document.getElementById('customName');
+const customQtyEl = document.getElementById('customQty');
+const customPEl = document.getElementById('customP');
+const customKEl = document.getElementById('customK');
+const customFEl = document.getElementById('customF');
+const customMatchHintEl = document.getElementById('customMatchHint');
+
+function applyCustomMatch(){
+  const name = customNameEl.value.trim();
+  const food = FOOD_LOOKUP[name];
+  const qty = Number(customQtyEl.value);
+  const mult = (qty===0 || isNaN(qty)) ? 0 : (qty || 1);
+  if(food){
+    customPEl.value = Math.round(food.p*mult*10)/10;
+    customKEl.value = Math.round(food.k*mult);
+    customFEl.value = Math.round(food.f*mult*10)/10;
+    customMatchHintEl.style.display = '';
+    customMatchHintEl.textContent = `已比對到資料庫:標準份量 ${food.qty}(目前 × ${mult})`;
+  } else {
+    customMatchHintEl.style.display = 'none';
+  }
+}
+customNameEl.addEventListener('input', applyCustomMatch);
+customQtyEl.addEventListener('input', applyCustomMatch);
+
 document.getElementById('customAddBtn').onclick = ()=>{
   const nameEl = document.getElementById('customName');
   const pEl = document.getElementById('customP');
@@ -936,7 +985,8 @@ document.getElementById('customAddBtn').onclick = ()=>{
   if(!name || (p===0 && k===0 && f===0)) return;
   const log = ensureLog(activeDate);
   log.custom.push({id: Date.now()+'-'+Math.random().toString(36).slice(2,7), name, p, k, f});
-  nameEl.value=''; pEl.value=''; kEl.value=''; fEl.value='';
+  nameEl.value=''; pEl.value=''; kEl.value=''; fEl.value=''; customQtyEl.value='1';
+  customMatchHintEl.style.display = 'none';
   renderAll();
   saveCloudLog();
 };
