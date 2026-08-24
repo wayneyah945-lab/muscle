@@ -177,6 +177,17 @@
   .weight-chart{width:100%;height:70px;display:block;}
   .weight-list{font-size:11px;color:var(--ink-soft);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap;}
 
+  .trend-section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+  .trend-section h3{margin:0 0 10px;font-size:14px;}
+  .trend-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--ink-soft);margin-bottom:6px;}
+  .trend-legend-item{display:flex;align-items:center;gap:5px;}
+  .trend-legend-item .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .trend-legend-item .dot.protein{background:var(--protein);}
+  .trend-legend-item .dot.kcal{background:var(--kcal);}
+  .trend-legend-note{font-size:10.5px;}
+  .trend-chart{width:100%;height:100px;display:block;}
+  .trend-list{font-size:11px;color:var(--ink-soft);margin-top:8px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+
   footer{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-soft);display:flex;justify-content:space-between;align-items:center;}
   .reset-btn{font-family:'Noto Sans TC',sans-serif;font-size:12px;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 12px;color:var(--ink);cursor:pointer;}
   .reset-btn:hover{background:var(--done-bg);}
@@ -373,6 +384,17 @@
       </div>
       <svg class="weight-chart" id="weightChart" viewBox="0 0 600 70" preserveAspectRatio="none"></svg>
       <div class="weight-list" id="weightList"></div>
+    </div>
+
+    <div class="trend-section">
+      <h3>過去 30 天達成率趨勢</h3>
+      <div class="trend-legend">
+        <span class="trend-legend-item"><i class="dot protein"></i>蛋白質</span>
+        <span class="trend-legend-item"><i class="dot kcal"></i>熱量</span>
+        <span class="trend-legend-note">虛線=100% 達標線,超過100%以100%顯示</span>
+      </div>
+      <svg class="trend-chart" id="trendChart" viewBox="0 0 600 100" preserveAspectRatio="none"></svg>
+      <div class="trend-list" id="trendList"></div>
     </div>
 
     <footer>
@@ -1160,6 +1182,7 @@ document.getElementById('saveSettingsBtn').onclick = async ()=>{
   };
   renderAll();
   refreshWeeklyAndStreak();
+    refreshTrendChart();
   settingsPanel.classList.remove('open');
   if(currentUser){
     try{ await setDoc(doc(db,"dietTrackerUsers",currentUser.uid), {settings:SETTINGS}, {merge:true}); }
@@ -1232,6 +1255,7 @@ async function saveCloudLog(){
     });
     renderAuthBar();
     refreshWeeklyAndStreak();
+    refreshTrendChart();
   }catch(e){
     console.error("寫入雲端資料失敗:", e);
     renderAuthBar({text:'儲存到雲端失敗，請檢查網路或稍後再試', err:true});
@@ -1297,6 +1321,65 @@ async function refreshWeeklyAndStreak(){
   document.getElementById('streakNum').textContent = streak;
 }
 
+// ---------- 過去 30 天蛋白質/熱量達成率趨勢圖 ----------
+async function refreshTrendChart(){
+  if(!currentUser) return;
+  const today = new Date();
+  const points = [];
+  for(let i=29;i>=0;i--){
+    const d = new Date(today); d.setDate(today.getDate()-i);
+    const ds = toDateStr(d);
+    const raw = logs[ds] || await fetchLogRaw(ds);
+    if(!raw){ points.push({ds, d, pPct:null, kPct:null}); continue; }
+    const totals = totalsFromRaw(raw, ds);
+    const target = computeTargetsForDate(ds, raw.typeOverride || typeOfDate(ds));
+    const pPct = Math.min(150, Math.round(totals.p/target.p*100));
+    const kPct = Math.min(150, Math.round(totals.k/target.k*100));
+    points.push({ds, d, pPct, kPct});
+  }
+  renderTrendChart(points);
+}
+
+function renderTrendChart(points){
+  const svg = document.getElementById('trendChart');
+  const listEl = document.getElementById('trendList');
+  const withData = points.filter(pt=> pt.pPct!==null);
+  if(withData.length===0){
+    svg.innerHTML = '';
+    listEl.textContent = '尚無資料';
+    return;
+  }
+  const w = 600, h = 100, padS = 6, padTop = 8, padBottom = 8;
+  const usableH = h - padTop - padBottom;
+  const maxPct = 150;
+  const step = points.length>1 ? (w-padS*2)/(points.length-1) : 0;
+  const yFor = pct => padTop + usableH - (pct/maxPct)*usableH;
+
+  function linePoints(key){
+    return points.map((pt,i)=>{
+      if(pt[key]===null) return null;
+      const x = padS + step*i;
+      const y = yFor(pt[key]);
+      return x+','+y;
+    }).filter(Boolean).join(' ');
+  }
+  const line100Y = yFor(100);
+
+  svg.innerHTML = `
+    <line x1="${padS}" y1="${line100Y}" x2="${w-padS}" y2="${line100Y}" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+    <polyline points="${linePoints('kPct')}" fill="none" stroke="var(--kcal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="${linePoints('pPct')}" fill="none" stroke="var(--protein)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  `;
+
+  const first = withData[0], last = withData[withData.length-1];
+  const avgP = Math.round(withData.reduce((s,pt)=>s+pt.pPct,0)/withData.length);
+  const avgK = Math.round(withData.reduce((s,pt)=>s+pt.kPct,0)/withData.length);
+  listEl.innerHTML = `
+    <span>${pad(first.d.getMonth()+1)}/${pad(first.d.getDate())} ~ ${pad(last.d.getMonth()+1)}/${pad(last.d.getDate())}</span>
+    <span>30天平均 蛋白 ${avgP}% · 熱量 ${avgK}%</span>
+  `;
+}
+
 
 
 function weightDocRef(dateStr){ return doc(db, "dietTrackerUsers", currentUser.uid, "weights", dateStr); }
@@ -1310,6 +1393,7 @@ document.getElementById('weightSaveBtn').onclick = async ()=>{
     await loadWeights();
     renderAll();
     refreshWeeklyAndStreak();
+    refreshTrendChart();
   }catch(e){ console.error("儲存體重失敗:", e); }
 };
 
@@ -1364,6 +1448,7 @@ onAuthStateChanged(auth, async (user)=>{
     await loadWeights();
     await loadLogFor(activeDate);
     refreshWeeklyAndStreak();
+    refreshTrendChart();
   } else {
     for(const k in logs) delete logs[k];
     weightEntries = [];
