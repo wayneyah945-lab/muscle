@@ -142,6 +142,21 @@
   .swap-btn{width:24px;height:24px;flex-shrink:0;border-radius:7px;border:1px solid var(--line);background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;color:var(--ink-soft);}
   .swap-btn:hover{background:var(--done-bg);}
 
+  .custom-section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+  .custom-section h3{margin:0 0 4px;font-size:14px;}
+  .custom-hint{font-size:11px;color:var(--ink-soft);margin:0 0 10px;}
+  .custom-form input[type="text"]{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;margin-bottom:8px;}
+  .custom-form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;}
+  .custom-form-grid label{font-size:11px;color:var(--ink-soft);display:block;margin-bottom:3px;}
+  .custom-form-grid input{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;}
+  .custom-add-btn{width:100%;background:var(--kcal);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
+  .custom-add-btn:hover{opacity:.9;}
+  .custom-agg{font-size:12px;color:var(--ink-soft);margin:12px 0 2px;text-align:right;}
+  li.item.custom-item{cursor:default;}
+  li.item.custom-item:hover{background:none;}
+  .del-btn{width:24px;height:24px;flex-shrink:0;border-radius:7px;border:1px solid var(--line);background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;color:var(--kcal);}
+  .del-btn:hover{background:var(--done-bg);}
+
   .weight-section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
   .weight-section h3{margin:0 0 10px;font-size:14px;}
   .weight-input-row{display:flex;gap:8px;margin-bottom:12px;}
@@ -163,32 +178,6 @@
   table.subtable th{color:var(--ink-soft);font-weight:600;font-size:11px;}
   table.subtable td.num{text-align:right;font-family:'Space Grotesk',sans-serif;white-space:nowrap;}
   table.subtable tr:last-child td{border-bottom:none;}
-  .sub-cat-head{display:flex;align-items:center;justify-content:space-between;}
-  .sub-cat-head.today-head{background:var(--done-bg);}
-  .day-type-badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;color:#fff;}
-  .day-type-badge.train{background:var(--train);}
-  .day-type-badge.rest{background:var(--rest);}
-
-  /* calendar page */
-  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:5px;}
-  .cal-weekday-row{margin-bottom:8px;}
-  .cal-weekday-row span{text-align:center;font-size:11px;color:var(--ink-soft);font-weight:600;}
-  .cal-cell{
-    aspect-ratio:1/1;border-radius:10px;border:1px solid var(--line);background:var(--panel);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    cursor:pointer;font-size:12px;position:relative;
-  }
-  .cal-cell:hover{background:var(--done-bg);}
-  .cal-cell.empty{visibility:hidden;cursor:default;}
-  .cal-cell .num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;}
-  .cal-cell.hit{background:var(--protein-soft, #E4EFEC);border-color:var(--protein);}
-  .cal-cell.hit .num{color:var(--protein);}
-  .cal-cell.miss{background:var(--done-bg);}
-  .cal-cell.nodata .num{color:var(--ink-soft);}
-  .cal-cell.today-cell{box-shadow:0 0 0 2px var(--kcal) inset;}
-  .cal-dot{width:5px;height:5px;border-radius:50%;margin-top:2px;}
-  .cal-dot.hit{background:var(--protein);}
-  .cal-dot.miss{background:var(--ink-soft);}
 </style>
 </head>
 <body>
@@ -196,7 +185,7 @@
   <header>
     <div class="title-row">
       <div>
-        <h1>巨巨成長營💪🏻</h1>
+        <h1>今天吃了嗎?</h1>
         <p class="sub">點項目打勾記錄,自動累計蛋白質、熱量與脂肪進度</p>
       </div>
       <button class="gear-btn" id="gearBtn" title="設定">⚙</button>
@@ -253,8 +242,6 @@
   <div class="pagetabs">
     <button class="pagetab active" id="pageTrackBtn">今日追蹤</button>
     <button class="pagetab" id="pageSubBtn">替代食物表</button>
-    <button class="pagetab" id="pageWeekBtn">本週總表</button>
-    <button class="pagetab" id="pageCalBtn">行事曆</button>
   </div>
 
   <div id="trackPage">
@@ -305,7 +292,31 @@
       </div>
     </div>
 
+    <div class="weektable-section">
+      <h3>本週總表</h3>
+      <table class="weektable" id="weekTable">
+        <thead><tr><th>日期</th><th>類型</th><th>蛋白質</th><th>熱量</th><th>脂肪</th><th>喝水</th></tr></thead>
+        <tbody id="weekTableBody"></tbody>
+      </table>
+    </div>
+
     <div id="meals"></div>
+
+    <div class="custom-section">
+      <h3>其他 / 自訂項目</h3>
+      <p class="custom-hint">吃了菜單以外的東西?填入蛋白質/熱量/脂肪,按下方按鈕直接打卡計入今天的量。</p>
+      <div class="custom-form">
+        <input type="text" id="customName" placeholder="食物名稱(例如:超商御飯糰)">
+        <div class="custom-form-grid">
+          <div><label>蛋白質(g)</label><input type="number" step="0.1" min="0" id="customP" placeholder="0"></div>
+          <div><label>熱量(kcal)</label><input type="number" step="1" min="0" id="customK" placeholder="0"></div>
+          <div><label>脂肪(g)</label><input type="number" step="0.1" min="0" id="customF" placeholder="0"></div>
+        </div>
+        <button class="custom-add-btn" id="customAddBtn">＋ 新增並打卡</button>
+      </div>
+      <div class="custom-agg" id="customAgg"></div>
+      <ul class="items" id="customList"></ul>
+    </div>
 
     <div class="weight-section">
       <h3>體重紀錄</h3>
@@ -326,26 +337,6 @@
   <div id="subPage" style="display:none;">
     <p class="sub-intro">菜單以外自己想吃的食物,可以查這張表估算蛋白質/熱量/脂肪,再回到「今日追蹤」用份量倍數欄位換算成你實際吃的量。</p>
     <div id="subCatContainer"></div>
-  </div>
-
-  <div id="weekPage" style="display:none;">
-    <div class="weeknav">
-      <button id="prevWeekBtn2">◀ 上週</button>
-      <span id="weekLabel2"></span>
-      <button id="nextWeekBtn2">下週 ▶</button>
-    </div>
-    <div id="weekCardsContainer" style="margin-top:10px;"></div>
-  </div>
-
-  <div id="calPage" style="display:none;">
-    <div class="weeknav">
-      <button id="prevMonthBtn">◀ 上個月</button>
-      <span id="monthLabel"></span>
-      <button id="nextMonthBtn">下個月 ▶</button>
-    </div>
-    <p class="sub-intro">綠色代表蛋白質有達標、灰色代表沒達標,點日期可以直接回到「今日追蹤」查看/補紀錄那一天。</p>
-    <div class="cal-grid cal-weekday-row" id="calWeekdayRow"></div>
-    <div class="cal-grid" id="calGrid"></div>
   </div>
 </div>
 
@@ -380,17 +371,14 @@ function v(name, qty, p, k, f){ return {name, qty, p, k, f}; }
 
 const TRAIN_ITEMS = [
   {meal:"早餐", items:[
-    {variants:[v("黑咖啡","1杯",0,2,0)]},
-    {variants:[v("燕麥片(乾)","50g",6,188,4), v("燕麥(泡濕,配餐一起吃)","50g乾(泡發後)",6,188,4)]},
-    {variants:[v("乳清蛋白粉","1匙(約30g)",24,120,2), v("無糖希臘優格","150g",15,90,0.6), v("水煮蛋","2顆(約100g)",12,140,10)]},
-    {variants:[v("無糖豆漿","300ml",10,130,4), v("牛奶(全脂)","300ml",10,183,10)]},
-    {variants:[v("香蕉","1根(約100g)",1,89,0.3), v("堅果(綜合)","15g",3,90,7.5)]},
-    {variants:[v("荷包蛋","2顆(約100g,含少許油煎)",12,180,14)]},
+    {variants:[v("全蛋","3顆",21,220,15)]},
+    {variants:[v("全麥吐司","2片(約80g)",8,200,3)]},
+    {variants:[v("無糖豆漿","300ml",10,130,4)]},
+    {variants:[v("香蕉","1根",1,105,0)]},
   ]},
   {meal:"上午點心", items:[
     {variants:[v("堅果","20g",4,120,10)]},
     {variants:[v("水果","1顆",0,80,0)]},
-    {variants:[v("燕麥片(乾)","30g",4,113,2), v("燕麥(泡濕,配餐一起吃)","30g乾(泡發後)",4,113,2)]},
   ]},
   {meal:"午餐", items:[
     {variants:[v("白飯","350g熟飯",8,455,1)]},
@@ -400,7 +388,6 @@ const TRAIN_ITEMS = [
   {meal:"下午點心", items:[
     {variants:[v("無糖優格","200g",10,120,4)]},
     {variants:[v("堅果","15g",3,90,8)]},
-    {variants:[v("燕麥片(乾)","30g",4,113,2), v("燕麥(泡濕,配餐一起吃)","30g乾(泡發後)",4,113,2)]},
   ]},
   {meal:"訓練後", items:[
     {variants:[v("乳清蛋白","1匙(約30g)",24,120,2)]},
@@ -415,17 +402,13 @@ const TRAIN_ITEMS = [
 
 const REST_ITEMS = [
   {meal:"早餐", items:[
-    {variants:[v("黑咖啡","1杯",0,2,0)]},
-    {variants:[v("燕麥片(乾)","40g",5,150,3), v("燕麥(泡濕,配餐一起吃)","40g乾(泡發後)",5,150,3)]},
-    {variants:[v("乳清蛋白粉","1匙(約30g)",24,120,2), v("無糖希臘優格","100g",10,60,0.4), v("水煮蛋","1顆(約50g)",6,70,5)]},
-    {variants:[v("無糖豆漿","250ml",8,110,3), v("牛奶(全脂)","200ml",7,122,7)]},
-    {variants:[v("堅果(綜合)","15g",3,90,7.5)]},
-    {variants:[v("荷包蛋","2顆(約100g,含少許油煎)",12,180,14)]},
+    {variants:[v("全蛋+蛋白","2全蛋+2蛋白",22,200,10)]},
+    {variants:[v("全麥吐司","1.5片(約60g)",6,150,2)]},
+    {variants:[v("無糖豆漿","250ml",8,110,3)]},
   ]},
   {meal:"上午點心", items:[
     {variants:[v("堅果","20g",4,120,10)]},
     {variants:[v("水果","1份",1,100,0)]},
-    {variants:[v("燕麥片(乾)","30g",4,113,2), v("燕麥(泡濕,配餐一起吃)","30g乾(泡發後)",4,113,2)]},
   ]},
   {meal:"午餐", items:[
     {variants:[v("白飯","250g熟飯",6,325,1)]},
@@ -435,7 +418,6 @@ const REST_ITEMS = [
   {meal:"下午點心", items:[
     {variants:[v("無糖優格","200g",10,120,4)]},
     {variants:[v("堅果","20g",4,120,10)]},
-    {variants:[v("燕麥片(乾)","30g",4,113,2), v("燕麥(泡濕,配餐一起吃)","30g乾(泡發後)",4,113,2)]},
   ]},
   {meal:"晚餐", items:[
     {variants:[v("糙米飯","150g熟飯",4,195,1)]},
@@ -445,7 +427,6 @@ const REST_ITEMS = [
   ]},
   {meal:"睡前(可選)", items:[
     {variants:[v("茅屋起司或優格","150g",12,120,3)]},
-    {variants:[v("燕麥片(乾)","25g",3,94,2), v("燕麥(泡濕,配餐一起吃)","25g乾(泡發後)",3,94,2)]},
   ]},
 ];
 
@@ -455,7 +436,6 @@ const SUBSTITUTE_FOODS = [
     {name:"雞胸肉", qty:"100g", p:31, k:165, f:4},
     {name:"雞腿肉(去皮)", qty:"100g", p:26, k:187, f:9},
     {name:"雞蛋", qty:"1顆(約50g)", p:6, k:70, f:5},
-    {name:"荷包蛋(煎)", qty:"1顆(約50g,含少許油)", p:6, k:90, f:7},
     {name:"鮭魚", qty:"100g", p:20, k:208, f:13},
     {name:"鯛魚/鱸魚", qty:"100g", p:22, k:128, f:4},
     {name:"牛肉(瘦)", qty:"100g", p:26, k:200, f:9},
@@ -465,7 +445,6 @@ const SUBSTITUTE_FOODS = [
     {name:"無糖希臘優格", qty:"100g", p:10, k:60, f:0.4},
     {name:"茅屋起司", qty:"100g", p:11, k:98, f:4},
     {name:"乳清蛋白粉", qty:"30g", p:24, k:120, f:2},
-    {name:"牛奶(全脂)", qty:"300ml", p:10, k:183, f:10},
   ]},
   {cat:"碳水化合物類", rows:[
     {name:"白飯(熟)", qty:"100g", p:2.5, k:130, f:0.3},
@@ -504,28 +483,16 @@ function renderSubstitutePage(){
 
 const pageTrackBtn = document.getElementById('pageTrackBtn');
 const pageSubBtn = document.getElementById('pageSubBtn');
-const pageWeekBtn = document.getElementById('pageWeekBtn');
-const pageCalBtn = document.getElementById('pageCalBtn');
 const trackPage = document.getElementById('trackPage');
 const subPage = document.getElementById('subPage');
-const weekPage = document.getElementById('weekPage');
-const calPage = document.getElementById('calPage');
-function showPage(which){
-  pageTrackBtn.classList.toggle('active', which==='track');
-  pageSubBtn.classList.toggle('active', which==='sub');
-  pageWeekBtn.classList.toggle('active', which==='week');
-  pageCalBtn.classList.toggle('active', which==='cal');
-  trackPage.style.display = which==='track' ? '' : 'none';
-  subPage.style.display = which==='sub' ? '' : 'none';
-  weekPage.style.display = which==='week' ? '' : 'none';
-  calPage.style.display = which==='cal' ? '' : 'none';
-  if(which==='week') renderWeekCardsPage();
-  if(which==='cal') renderCalendarPage();
-}
-pageTrackBtn.onclick = ()=> showPage('track');
-pageSubBtn.onclick = ()=> showPage('sub');
-pageWeekBtn.onclick = ()=> showPage('week');
-pageCalBtn.onclick = ()=> showPage('cal');
+pageTrackBtn.onclick = ()=>{
+  pageTrackBtn.classList.add('active'); pageSubBtn.classList.remove('active');
+  trackPage.style.display=''; subPage.style.display='none';
+};
+pageSubBtn.onclick = ()=>{
+  pageSubBtn.classList.add('active'); pageTrackBtn.classList.remove('active');
+  trackPage.style.display='none'; subPage.style.display='';
+};
 renderSubstitutePage();
 
 // ---------- 主追蹤功能 ----------
@@ -570,10 +537,6 @@ function getWeightOnOrBefore(dateStr){
   if(best) return best.weight;
   return weightEntries[0].weight;
 }
-function getWeightExact(dateStr){
-  const found = weightEntries.find(e=> e.date===dateStr);
-  return found ? found.weight : null;
-}
 
 function computeTargetsForDate(dateStr){
   const type = typeOfDate(dateStr);
@@ -588,11 +551,18 @@ function computeTargetsForDate(dateStr){
 let activeDate = todayStr();
 let weekOffset = 0;
 
-// logs[dateStr] = {checked:Set, water:number, alts:{}, portions:{"mi-ii":數字倍數}}
+// logs[dateStr] = {checked:Set, water:number, alts:{}, portions:{"mi-ii":數字倍數}, custom:[{id,name,p,k,f}]}
 const logs = {};
 function ensureLog(dateStr){
-  if(!logs[dateStr]) logs[dateStr] = {checked:new Set(), water:0, alts:{}, portions:{}};
+  if(!logs[dateStr]) logs[dateStr] = {checked:new Set(), water:0, alts:{}, portions:{}, custom:[]};
+  if(!logs[dateStr].custom) logs[dateStr].custom = [];
   return logs[dateStr];
+}
+
+function customTotals(log){
+  let p=0,k=0,f=0;
+  (log.custom||[]).forEach(c=>{ p+=Number(c.p)||0; k+=Number(c.k)||0; f+=Number(c.f)||0; });
+  return {p,k,f};
 }
 
 function getItemsForDate(dateStr){
@@ -646,141 +616,8 @@ function renderTabs(){
   });
 }
 
-document.getElementById('prevWeekBtn').onclick = ()=>{ weekOffset--; renderAll(); };
-document.getElementById('nextWeekBtn').onclick = ()=>{ weekOffset++; renderAll(); };
-
-// ---------- 本週總表(卡片式,獨立分頁,獨立週次) ----------
-let weekOffset2 = 0;
-function weekDatesFor(offset){
-  const base = new Date();
-  const monday = getMonday(base);
-  monday.setDate(monday.getDate() + offset*7);
-  const arr = [];
-  for(let i=0;i<7;i++){
-    const d = new Date(monday);
-    d.setDate(monday.getDate()+i);
-    arr.push(d);
-  }
-  return arr;
-}
-document.getElementById('prevWeekBtn2').onclick = ()=>{ weekOffset2--; renderWeekCardsPage(); };
-document.getElementById('nextWeekBtn2').onclick = ()=>{ weekOffset2++; renderWeekCardsPage(); };
-
-async function renderWeekCardsPage(){
-  const container = document.getElementById('weekCardsContainer');
-  document.getElementById('weekLabel2').textContent =
-    weekOffset2===0 ? '本週' : (weekOffset2>0 ? `第 +${weekOffset2} 週` : `第 ${weekOffset2} 週`);
-  const week = weekDatesFor(weekOffset2);
-  const today = todayStr();
-  const rows = [];
-  for(const d of week){
-    const ds = toDateStr(d);
-    let raw = logs[ds];
-    if(!raw && currentUser) raw = await fetchLogRaw(ds);
-    const target = computeTargetsForDate(ds);
-    const totals = raw ? totalsFromRaw(raw, ds) : {p:0,k:0,f:0};
-    const water = raw ? raw.water : 0;
-    rows.push({ds, d, target, totals, water});
-  }
-  container.innerHTML = rows.map(r=>{
-    const type = typeOfDate(r.ds);
-    const isToday = r.ds===today;
-    const pCls = r.totals.p >= r.target.p ? 'hit' : 'miss';
-    const kCls = r.totals.k >= r.target.k ? 'hit' : 'miss';
-    const fCls = r.totals.f >= r.target.f ? 'hit' : 'miss';
-    return `
-    <div class="sub-cat">
-      <div class="sub-cat-head${isToday?' today-head':''}">
-        <span>${pad(r.d.getMonth()+1)}/${pad(r.d.getDate())}(週${WEEKDAY_LABEL[r.d.getDay()]})${isToday?' · 今天':''}</span>
-        <span class="day-type-badge ${type}">${type==='train'?'訓練日':'休息日'}</span>
-      </div>
-      <table class="subtable">
-        <tbody>
-          <tr><td>體重</td><td class="num">${getWeightExact(r.ds)!==null ? getWeightExact(r.ds)+'kg' : '-'}</td></tr>
-          <tr><td>蛋白質</td><td class="num ${pCls}">${r.totals.p} / ${r.target.p}g</td></tr>
-          <tr><td>熱量</td><td class="num ${kCls}">${r.totals.k} / ${r.target.k}kcal</td></tr>
-          <tr><td>脂肪</td><td class="num ${fCls}">${r.totals.f} / ${r.target.f}g</td></tr>
-          <tr><td>喝水</td><td class="num">${r.water}ml</td></tr>
-        </tbody>
-      </table>
-    </div>`;
-  }).join('');
-}
-
-// ---------- 行事曆分頁 ----------
-let monthOffset = 0;
-document.getElementById('prevMonthBtn').onclick = ()=>{ monthOffset--; renderCalendarPage(); };
-document.getElementById('nextMonthBtn').onclick = ()=>{ monthOffset++; renderCalendarPage(); };
-
-document.getElementById('calWeekdayRow').innerHTML =
-  WEEKDAY_LABEL.map(l=>`<span>${l}</span>`).join('');
-
-async function renderCalendarPage(){
-  const base = new Date();
-  const y = base.getFullYear();
-  const m = base.getMonth() + monthOffset;
-  const firstOfMonth = new Date(y, m, 1);
-  const daysInMonth = new Date(y, m+1, 0).getDate();
-  const leadingBlanks = firstOfMonth.getDay(); // 0=Sun
-
-  document.getElementById('monthLabel').textContent = `${firstOfMonth.getFullYear()}年 ${firstOfMonth.getMonth()+1}月`;
-
-  const grid = document.getElementById('calGrid');
-  const today = todayStr();
-  const cells = [];
-
-  for(let i=0;i<leadingBlanks;i++) cells.push({empty:true});
-
-  for(let day=1; day<=daysInMonth; day++){
-    const d = new Date(y, m, day);
-    const ds = toDateStr(d);
-    cells.push({empty:false, d, ds});
-  }
-
-  // 先畫出骨架(避免等待資料時整頁空白),再非同步補上狀態
-  grid.innerHTML = cells.map(c=>{
-    if(c.empty) return `<div class="cal-cell empty"></div>`;
-    return `<div class="cal-cell nodata" data-date="${c.ds}"><span class="num">${c.d.getDate()}</span></div>`;
-  }).join('');
-
-  // 綁定點擊(不管有沒有資料都能點,回到追蹤頁該日,並同步切換到該日所在的那一週)
-  grid.querySelectorAll('.cal-cell[data-date]').forEach(el=>{
-    el.onclick = ()=>{
-      const ds = el.getAttribute('data-date');
-      activeDate = ds;
-      const targetMonday = getMonday(parseDateStr(ds));
-      const nowMonday = getMonday(new Date());
-      weekOffset = Math.round((targetMonday - nowMonday) / (7*24*60*60*1000));
-      showPage('track');
-      loadLogFor(ds);
-    };
-  });
-
-  if(!currentUser) return;
-
-  // 依序抓每天資料並更新樣式(用快取避免重複讀取)
-  for(const c of cells){
-    if(c.empty) continue;
-    if(c.ds > today) continue; // 未來日期不用抓
-    let raw = logs[c.ds];
-    if(!raw) raw = await fetchLogRaw(c.ds);
-    const cellEl = grid.querySelector(`.cal-cell[data-date="${c.ds}"]`);
-    if(!cellEl) continue;
-    cellEl.classList.remove('nodata');
-    if(c.ds===today) cellEl.classList.add('today-cell');
-    if(!raw){
-      cellEl.classList.add('nodata');
-      continue;
-    }
-    const totals = totalsFromRaw(raw, c.ds);
-    const target = computeTargetsForDate(c.ds);
-    const isHit = totals.p >= target.p;
-    cellEl.classList.add(isHit ? 'hit' : 'miss');
-    const dot = document.createElement('div');
-    dot.className = 'cal-dot ' + (isHit ? 'hit' : 'miss');
-    cellEl.appendChild(dot);
-  }
-}
+document.getElementById('prevWeekBtn').onclick = ()=>{ weekOffset--; renderAll(); refreshWeekTable(); };
+document.getElementById('nextWeekBtn').onclick = ()=>{ weekOffset++; renderAll(); refreshWeekTable(); };
 
 function renderMeals(){
   const mealsEl = document.getElementById('meals');
@@ -851,6 +688,58 @@ function renderMeals(){
   });
 }
 
+function renderCustomSection(){
+  const log = ensureLog(activeDate);
+  const listEl = document.getElementById('customList');
+  const aggEl = document.getElementById('customAgg');
+  const items = log.custom || [];
+
+  if(items.length===0){
+    listEl.innerHTML = '';
+    aggEl.textContent = '今天還沒有自訂項目';
+    return;
+  }
+
+  const t = customTotals(log);
+  aggEl.textContent = `合計 ${Math.round(t.p*10)/10}g 蛋白 · ${Math.round(t.k)} kcal · ${Math.round(t.f*10)/10}g 脂`;
+
+  listEl.innerHTML = '';
+  items.forEach(c=>{
+    const li = document.createElement('li');
+    li.className = 'item custom-item';
+    li.innerHTML = `
+      <span class="check" style="background:var(--protein);border-color:var(--protein);"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:1;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      <span class="item-text">
+        <div class="item-name">${c.name}</div>
+      </span>
+      <span class="item-macro">${c.p||0}g · ${c.k||0}kcal · ${c.f||0}g脂</span>
+      <button class="del-btn" title="刪除">✕</button>
+    `;
+    li.querySelector('.del-btn').onclick = ()=>{
+      log.custom = log.custom.filter(x=>x.id!==c.id);
+      renderAll(); saveCloudLog();
+    };
+    listEl.appendChild(li);
+  });
+}
+
+document.getElementById('customAddBtn').onclick = ()=>{
+  const nameEl = document.getElementById('customName');
+  const pEl = document.getElementById('customP');
+  const kEl = document.getElementById('customK');
+  const fEl = document.getElementById('customF');
+  const name = nameEl.value.trim();
+  const p = Number(pEl.value)||0;
+  const k = Number(kEl.value)||0;
+  const f = Number(fEl.value)||0;
+  if(!name || (p===0 && k===0 && f===0)) return;
+  const log = ensureLog(activeDate);
+  log.custom.push({id: Date.now()+'-'+Math.random().toString(36).slice(2,7), name, p, k, f});
+  nameEl.value=''; pEl.value=''; kEl.value=''; fEl.value='';
+  renderAll();
+  saveCloudLog();
+};
+
 function renderStats(){
   const items = getItemsForDate(activeDate);
   const log = ensureLog(activeDate);
@@ -863,6 +752,8 @@ function renderStats(){
       totalP+=scaled.p; totalK+=scaled.k; totalF+=scaled.f;
     }
   }));
+  const ct = customTotals(log);
+  totalP+=ct.p; totalK+=ct.k; totalF+=ct.f;
   const target = computeTargetsForDate(activeDate);
 
   document.getElementById('proteinNum').textContent = Math.round(totalP*10)/10 + 'g';
@@ -888,11 +779,12 @@ function renderStats(){
 function renderAll(){
   renderTabs();
   renderMeals();
+  renderCustomSection();
   renderStats();
 }
 
 document.getElementById('resetBtn').onclick = ()=>{
-  logs[activeDate] = {checked:new Set(), water:0, alts:{}, portions:{}};
+  logs[activeDate] = {checked:new Set(), water:0, alts:{}, portions:{}, custom:[]};
   renderAll();
   saveCloudLog();
 };
@@ -956,6 +848,7 @@ document.getElementById('saveSettingsBtn').onclick = async ()=>{
   };
   renderAll();
   refreshWeeklyAndStreak();
+  refreshWeekTable();
   settingsPanel.classList.remove('open');
   if(currentUser){
     try{ await setDoc(doc(db,"dietTrackerUsers",currentUser.uid), {settings:SETTINGS}, {merge:true}); }
@@ -997,19 +890,16 @@ function renderAuthBar(syncMsg){
 
 function logDocRef(dateStr){ return doc(db, "dietTrackerUsers", currentUser.uid, "logs", dateStr); }
 
-const loadedFromCloud = new Set();
 async function loadLogFor(dateStr){
-  if(!currentUser) { renderAll(); return; }
-  if(loadedFromCloud.has(dateStr)) { renderAll(); return; }
+  if(!currentUser || logs[dateStr]) { renderAll(); return; }
   try{
     const snap = await getDoc(logDocRef(dateStr));
     if(snap.exists()){
       const data = snap.data();
-      logs[dateStr] = {checked:new Set(data.checked||[]), water:data.water||0, alts:data.alts||{}, portions:data.portions||{}};
+      logs[dateStr] = {checked:new Set(data.checked||[]), water:data.water||0, alts:data.alts||{}, portions:data.portions||{}, custom:data.custom||[]};
     } else {
       ensureLog(dateStr);
     }
-    loadedFromCloud.add(dateStr);
   }catch(e){ console.error("讀取當日紀錄失敗:", e); }
   renderAll();
 }
@@ -1023,9 +913,11 @@ async function saveCloudLog(){
       water: log.water,
       alts: log.alts,
       portions: log.portions,
+      custom: log.custom || [],
     });
     renderAuthBar();
     refreshWeeklyAndStreak();
+    refreshWeekTable();
   }catch(e){
     console.error("寫入雲端資料失敗:", e);
     renderAuthBar({text:'儲存到雲端失敗，請檢查網路或稍後再試', err:true});
@@ -1037,7 +929,7 @@ async function fetchLogRaw(dateStr){
     const snap = await getDoc(logDocRef(dateStr));
     if(!snap.exists()) return null;
     const data = snap.data();
-    return {checked:new Set(data.checked||[]), water:data.water||0, alts:data.alts||{}, portions:data.portions||{}};
+    return {checked:new Set(data.checked||[]), water:data.water||0, alts:data.alts||{}, portions:data.portions||{}, custom:data.custom||[]};
   }catch(e){ return null; }
 }
 
@@ -1054,6 +946,8 @@ function totalsFromRaw(raw, dateStr){
       p+=scaled.p; k+=scaled.k; f+=scaled.f;
     }
   }));
+  const ct = customTotals(raw);
+  p+=ct.p; k+=ct.k; f+=ct.f;
   return {p,k,f};
 }
 
@@ -1088,7 +982,35 @@ async function refreshWeeklyAndStreak(){
   document.getElementById('streakNum').textContent = streak;
 }
 
-
+async function refreshWeekTable(){
+  const tbody = document.getElementById('weekTableBody');
+  const week = currentWeekDates();
+  const today = todayStr();
+  const rows = [];
+  for(const d of week){
+    const ds = toDateStr(d);
+    let raw = logs[ds];
+    if(!raw && currentUser) raw = await fetchLogRaw(ds);
+    const target = computeTargetsForDate(ds);
+    const totals = raw ? totalsFromRaw(raw, ds) : {p:0,k:0,f:0};
+    const water = raw ? raw.water : 0;
+    rows.push({ds, d, target, totals, water});
+  }
+  tbody.innerHTML = rows.map(r=>{
+    const type = typeOfDate(r.ds);
+    const pCls = r.totals.p >= r.target.p ? 'hit' : 'miss';
+    const kCls = r.totals.k >= r.target.k ? 'hit' : 'miss';
+    const fCls = r.totals.f >= r.target.f ? 'hit' : 'miss';
+    return `<tr class="${r.ds===today?'today-row':''}">
+      <td class="dcol">${pad(r.d.getMonth()+1)}/${pad(r.d.getDate())}(${WEEKDAY_LABEL[r.d.getDay()]})</td>
+      <td>${type==='train'?'訓練':'休息'}</td>
+      <td class="${pCls}">${r.totals.p}/${r.target.p}g</td>
+      <td class="${kCls}">${r.totals.k}/${r.target.k}</td>
+      <td class="${fCls}">${r.totals.f}/${r.target.f}g</td>
+      <td>${r.water}ml</td>
+    </tr>`;
+  }).join('');
+}
 
 function weightDocRef(dateStr){ return doc(db, "dietTrackerUsers", currentUser.uid, "weights", dateStr); }
 
@@ -1101,6 +1023,7 @@ document.getElementById('weightSaveBtn').onclick = async ()=>{
     await loadWeights();
     renderAll();
     refreshWeeklyAndStreak();
+    refreshWeekTable();
   }catch(e){ console.error("儲存體重失敗:", e); }
 };
 
@@ -1155,16 +1078,19 @@ onAuthStateChanged(auth, async (user)=>{
     await loadWeights();
     await loadLogFor(activeDate);
     refreshWeeklyAndStreak();
+    refreshWeekTable();
   } else {
     for(const k in logs) delete logs[k];
     weightEntries = [];
     renderAuthBar();
     renderAll();
+    refreshWeekTable();
   }
 });
 
 renderAuthBar();
 renderAll();
+refreshWeekTable();
 </script>
 </body>
 </html>
