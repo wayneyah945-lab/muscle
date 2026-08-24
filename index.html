@@ -62,8 +62,8 @@
   .save-settings-btn{background:var(--ink);color:var(--bg);border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
 
   /* page tabs */
-  .pagetabs{display:flex;gap:8px;margin:16px 0 6px;}
-  .pagetab{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink-soft);font-family:'Noto Sans TC',sans-serif;}
+  .pagetabs{display:flex;gap:8px;margin:16px 0 6px;flex-wrap:wrap;}
+  .pagetab{flex:1 1 auto;min-width:86px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink-soft);font-family:'Noto Sans TC',sans-serif;}
   .pagetab.active{background:var(--ink);color:var(--bg);border-color:var(--ink);}
 
   .weeknav{display:flex;align-items:center;justify-content:space-between;margin-top:16px;font-size:12px;color:var(--ink-soft);}
@@ -308,6 +308,7 @@
     <button class="pagetab active" id="pageTrackBtn">今日追蹤</button>
     <button class="pagetab" id="pageSubBtn">替代食物表</button>
     <button class="pagetab" id="pageWeekBtn">本週總表</button>
+    <button class="pagetab" id="pageWeightBtn">體重紀錄</button>
     <button class="pagetab" id="pageCalBtn">行事曆</button>
   </div>
 
@@ -393,16 +394,6 @@
       <ul class="items" id="customList"></ul>
     </div>
 
-    <div class="weight-section">
-      <h3>體重紀錄</h3>
-      <div class="weight-input-row">
-        <input type="number" step="0.1" id="weightInput" placeholder="今天體重 (kg)">
-        <button id="weightSaveBtn">記錄</button>
-      </div>
-      <svg class="weight-chart" id="weightChart" viewBox="0 0 600 70" preserveAspectRatio="none"></svg>
-      <div class="weight-list" id="weightList"></div>
-    </div>
-
     <div class="trend-section">
       <h3>過去 30 天達成率趨勢</h3>
       <div class="trend-legend">
@@ -432,6 +423,18 @@
       <button id="nextWeekBtn2">下週 ▶</button>
     </div>
     <div id="weekCardsContainer" style="margin-top:10px;"></div>
+  </div>
+
+  <div id="weightPage" style="display:none;">
+    <div class="weight-section">
+      <h3>體重紀錄</h3>
+      <div class="weight-input-row">
+        <input type="number" step="0.1" id="weightInput" placeholder="今天體重 (kg)">
+        <button id="weightSaveBtn">記錄</button>
+      </div>
+      <svg class="weight-chart" id="weightChart" viewBox="0 0 600 70" preserveAspectRatio="none"></svg>
+      <div class="weight-list" id="weightList"></div>
+    </div>
   </div>
 
   <div id="calPage" style="display:none;">
@@ -619,26 +622,32 @@ function renderSubstitutePage(){
 const pageTrackBtn = document.getElementById('pageTrackBtn');
 const pageSubBtn = document.getElementById('pageSubBtn');
 const pageWeekBtn = document.getElementById('pageWeekBtn');
+const pageWeightBtn = document.getElementById('pageWeightBtn');
 const pageCalBtn = document.getElementById('pageCalBtn');
 const trackPage = document.getElementById('trackPage');
 const subPage = document.getElementById('subPage');
 const weekPage = document.getElementById('weekPage');
+const weightPage = document.getElementById('weightPage');
 const calPage = document.getElementById('calPage');
 function showPage(which){
   pageTrackBtn.classList.toggle('active', which==='track');
   pageSubBtn.classList.toggle('active', which==='sub');
   pageWeekBtn.classList.toggle('active', which==='week');
+  pageWeightBtn.classList.toggle('active', which==='weight');
   pageCalBtn.classList.toggle('active', which==='cal');
   trackPage.style.display = which==='track' ? '' : 'none';
   subPage.style.display = which==='sub' ? '' : 'none';
   weekPage.style.display = which==='week' ? '' : 'none';
+  weightPage.style.display = which==='weight' ? '' : 'none';
   calPage.style.display = which==='cal' ? '' : 'none';
   if(which==='week') renderWeekCardsPage();
   if(which==='cal') renderCalendarPage();
+  if(which==='weight') renderWeightChart(weightEntries);
 }
 pageTrackBtn.onclick = ()=> showPage('track');
 pageSubBtn.onclick = ()=> showPage('sub');
 pageWeekBtn.onclick = ()=> showPage('week');
+pageWeightBtn.onclick = ()=> showPage('weight');
 pageCalBtn.onclick = ()=> showPage('cal');
 renderSubstitutePage();
 
