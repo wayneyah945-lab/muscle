@@ -815,6 +815,7 @@ renderSubstitutePage();
 
 // ---------- 主追蹤功能 ----------
 const WEEKDAY_TYPE = ['rest','rest','train','train','rest','train','train']; // Sun..Sat
+const HIT_RATIO = 0.9; // 蛋白質達到目標的9成就算「達標」(連續天數、行事曆等都用這個標準)
 const WEEKDAY_LABEL = ['日','一','二','三','四','五','六'];
 
 let SETTINGS = {
@@ -1079,7 +1080,7 @@ async function renderCalendarPage(){
     }
     const totals = totalsFromRaw(raw, c.ds);
     const target = computeTargetsForDate(c.ds, raw.typeOverride || typeOfDate(c.ds));
-    const isHit = totals.p >= target.p;
+    const isHit = totals.p >= target.p*HIT_RATIO;
     cellEl.classList.add(isHit ? 'hit' : 'miss');
     const dot = document.createElement('div');
     dot.className = 'cal-dot ' + (isHit ? 'hit' : 'miss');
@@ -1584,7 +1585,6 @@ async function refreshWeeklyAndStreak(){
   document.getElementById('wkProtein').textContent = count ? Math.round(sumPPct/count)+'%' : '尚無資料';
   document.getElementById('wkKcal').textContent = count ? Math.round(sumKPct/count)+'%' : '尚無資料';
 
-  const STREAK_HIT_RATIO = 0.9; // 蛋白質達到目標的9成就算維持連續天數
   let streak = 0;
   for(let i=0;i<60;i++){
     const d = new Date(today); d.setDate(today.getDate()-i);
@@ -1593,7 +1593,7 @@ async function refreshWeeklyAndStreak(){
     if(!raw) break;
     const totals = totalsFromRaw(raw, ds);
     const target = computeTargetsForDate(ds, raw.typeOverride || typeOfDate(ds));
-    if(totals.p >= target.p*STREAK_HIT_RATIO) streak++; else break;
+    if(totals.p >= target.p*HIT_RATIO) streak++; else break;
   }
   renderStreak(streak);
 }
