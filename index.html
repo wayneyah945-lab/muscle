@@ -1585,8 +1585,20 @@ async function refreshWeeklyAndStreak(){
   document.getElementById('wkProtein').textContent = count ? Math.round(sumPPct/count)+'%' : '尚無資料';
   document.getElementById('wkKcal').textContent = count ? Math.round(sumKPct/count)+'%' : '尚無資料';
 
+  // 「今天」通常還沒吃完一整天,如果今天還沒達到門檻,先跳過今天、從昨天開始算,
+  // 避免因為今天還沒吃完就把連續天數歸零;如果今天已經達標了,就照樣算進去。
   let streak = 0;
-  for(let i=0;i<60;i++){
+  let startOffset = 0;
+  const todayDs = toDateStr(today);
+  const todayRaw = logs[todayDs] || await fetchLogRaw(todayDs);
+  if(todayRaw){
+    const todayTotals = totalsFromRaw(todayRaw, todayDs);
+    const todayTarget = computeTargetsForDate(todayDs, todayRaw.typeOverride || typeOfDate(todayDs));
+    if(todayTotals.p < todayTarget.p*HIT_RATIO) startOffset = 1;
+  } else {
+    startOffset = 1;
+  }
+  for(let i=startOffset;i<60;i++){
     const d = new Date(today); d.setDate(today.getDate()-i);
     const ds = toDateStr(d);
     const raw = logs[ds] || await fetchLogRaw(ds);
