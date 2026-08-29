@@ -69,6 +69,47 @@
   .weeknav{display:flex;align-items:center;justify-content:space-between;margin-top:16px;font-size:12px;color:var(--ink-soft);}
   .weeknav button{background:none;border:1px solid var(--line);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px;color:var(--ink);}
   .weeknav button:hover{background:var(--done-bg);}
+
+  .bodypart-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:14px 0;}
+  .bodypart-label{font-size:13px;font-weight:600;margin-bottom:8px;}
+  .bodypart-chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .bodypart-chip{background:none;border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:12px;cursor:pointer;color:var(--ink-soft);font-family:'Noto Sans TC',sans-serif;}
+  .bodypart-chip:hover{background:var(--done-bg);}
+  .bodypart-chip.active{background:var(--train);border-color:var(--train);color:#fff;}
+  #bodypartCustomInput{width:100%;margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;}
+
+  .preset-exercises{margin-bottom:14px;}
+  .preset-group{margin-bottom:8px;}
+  .preset-group-label{font-size:11px;color:var(--ink-soft);margin-bottom:5px;}
+  .preset-chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .preset-chip{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:12px;cursor:pointer;color:var(--ink-soft);font-family:'Noto Sans TC',sans-serif;}
+  .preset-chip:hover{background:var(--done-bg);}
+  .preset-chip.added{background:var(--protein);border-color:var(--protein);color:#fff;}
+
+  .exercise-add-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;}
+  .exercise-add-card input{flex:1;min-width:160px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;}
+  .exercise-add-card button{background:var(--train);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
+  .exercise-add-card button:hover{opacity:.9;}
+
+  .exercise-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
+  .exercise-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .exercise-card-head .ex-name{font-size:14px;font-weight:600;}
+  .exercise-card-head .ex-del{background:none;border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-size:12px;color:var(--kcal);cursor:pointer;}
+  .exercise-card-head .ex-del:hover{background:var(--done-bg);}
+  .set-row{display:grid;grid-template-columns:28px 1fr 1fr 28px;gap:8px;align-items:center;margin-bottom:6px;}
+  .set-row .set-idx{font-size:12px;color:var(--ink-soft);text-align:center;}
+  .set-row input{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;}
+  .set-row .set-del{background:none;border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--kcal);cursor:pointer;padding:5px;}
+  .set-row .set-del:hover{background:var(--done-bg);}
+  .set-labels{display:grid;grid-template-columns:28px 1fr 1fr 28px;gap:8px;font-size:10.5px;color:var(--ink-soft);margin-bottom:4px;}
+  .set-add-btn{width:100%;background:none;border:1px dashed var(--line);border-radius:8px;padding:7px;font-size:12px;color:var(--ink-soft);cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:4px;}
+  .set-add-btn:hover{background:var(--done-bg);}
+  .exercise-vol{font-size:11px;color:var(--ink-soft);margin-top:8px;text-align:right;}
+
+  .workout-summary{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--ink-soft);}
+  .workout-summary b{color:var(--ink);font-family:'Space Grotesk',sans-serif;}
+  .workout-empty{font-size:12px;color:var(--ink-soft);text-align:center;padding:20px 0;}
+
   .tabs{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:10px 0 18px;}
   .tab{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 2px 7px;text-align:center;cursor:pointer;transition:all .15s ease;position:relative;}
   .tab .d{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;}
@@ -309,6 +350,7 @@
     <button class="pagetab" id="pageSubBtn">替代食物表</button>
     <button class="pagetab" id="pageWeekBtn">本週總表</button>
     <button class="pagetab" id="pageWeightBtn">體重紀錄</button>
+    <button class="pagetab" id="pageWorkoutBtn">訓練紀錄</button>
     <button class="pagetab" id="pageCalBtn">行事曆</button>
   </div>
 
@@ -435,6 +477,32 @@
       <svg class="weight-chart" id="weightChart" viewBox="0 0 600 70" preserveAspectRatio="none"></svg>
       <div class="weight-list" id="weightList"></div>
     </div>
+  </div>
+
+  <div id="workoutPage" style="display:none;">
+    <div class="weeknav">
+      <button id="workoutPrevDayBtn">◀ 前一天</button>
+      <span id="workoutDateLabel"></span>
+      <button id="workoutNextDayBtn">後一天 ▶</button>
+    </div>
+
+    <div class="bodypart-card">
+      <div class="bodypart-label">今天訓練部位</div>
+      <div class="bodypart-chips" id="bodypartChips"></div>
+      <input type="text" id="bodypartCustomInput" placeholder="輸入自訂部位名稱後按 Enter" style="display:none;">
+    </div>
+
+    <div class="preset-exercises" id="presetExercises"></div>
+
+    <div class="exercise-add-card">
+      <input type="text" id="exerciseNameInput" list="exerciseNameList" placeholder="動作名稱(例如:臥推)" autocomplete="off">
+      <datalist id="exerciseNameList"></datalist>
+      <button id="exerciseAddBtn">＋ 新增動作</button>
+    </div>
+
+    <div id="exerciseListContainer"></div>
+
+    <div class="workout-summary" id="workoutSummary"></div>
   </div>
 
   <div id="calPage" style="display:none;">
@@ -634,31 +702,37 @@ const pageTrackBtn = document.getElementById('pageTrackBtn');
 const pageSubBtn = document.getElementById('pageSubBtn');
 const pageWeekBtn = document.getElementById('pageWeekBtn');
 const pageWeightBtn = document.getElementById('pageWeightBtn');
+const pageWorkoutBtn = document.getElementById('pageWorkoutBtn');
 const pageCalBtn = document.getElementById('pageCalBtn');
 const trackPage = document.getElementById('trackPage');
 const subPage = document.getElementById('subPage');
 const weekPage = document.getElementById('weekPage');
 const weightPage = document.getElementById('weightPage');
+const workoutPage = document.getElementById('workoutPage');
 const calPage = document.getElementById('calPage');
 function showPage(which){
   pageTrackBtn.classList.toggle('active', which==='track');
   pageSubBtn.classList.toggle('active', which==='sub');
   pageWeekBtn.classList.toggle('active', which==='week');
   pageWeightBtn.classList.toggle('active', which==='weight');
+  pageWorkoutBtn.classList.toggle('active', which==='workout');
   pageCalBtn.classList.toggle('active', which==='cal');
   trackPage.style.display = which==='track' ? '' : 'none';
   subPage.style.display = which==='sub' ? '' : 'none';
   weekPage.style.display = which==='week' ? '' : 'none';
   weightPage.style.display = which==='weight' ? '' : 'none';
+  workoutPage.style.display = which==='workout' ? '' : 'none';
   calPage.style.display = which==='cal' ? '' : 'none';
   if(which==='week') renderWeekCardsPage();
   if(which==='cal') renderCalendarPage();
   if(which==='weight') renderWeightChart(weightEntries);
+  if(which==='workout') openWorkoutPage();
 }
 pageTrackBtn.onclick = ()=> showPage('track');
 pageSubBtn.onclick = ()=> showPage('sub');
 pageWeekBtn.onclick = ()=> showPage('week');
 pageWeightBtn.onclick = ()=> showPage('weight');
+pageWorkoutBtn.onclick = ()=> showPage('workout');
 pageCalBtn.onclick = ()=> showPage('cal');
 renderSubstitutePage();
 
@@ -793,7 +867,7 @@ function renderTabs(){
     const el = document.createElement('div');
     el.className = 'tab' + (ds===activeDate ? ' active '+type : '') + (ds===today ? ' today' : '');
     el.innerHTML = `<span class="d">${WEEKDAY_LABEL[d.getDay()]}</span><span class="dt">${pad(d.getMonth()+1)}/${pad(d.getDate())}</span><span class="k">${typeLabelShort(type)}</span>`;
-    el.onclick = ()=>{ activeDate = ds; renderAll(); loadLogFor(ds); };
+    el.onclick = ()=>{ activeDate = ds; renderAll(); loadLogFor(ds); loadWorkoutLogFor(ds); };
     tabsEl.appendChild(el);
   });
 }
@@ -906,6 +980,7 @@ async function renderCalendarPage(){
       weekOffset = Math.round((targetMonday - nowMonday) / (7*24*60*60*1000));
       showPage('track');
       loadLogFor(ds);
+      loadWorkoutLogFor(ds);
     };
   });
 
@@ -1496,6 +1571,248 @@ function renderWeightChart(entries){
   listEl.innerHTML = entries.slice(-6).map(e=>`${e.date.slice(5)}: ${e.weight}kg`).join(' · ');
 }
 
+// ---------- 訓練紀錄(動作/組數/次數/重量) ----------
+const BODY_PART_PRESETS = ['肩+腿','胸+背','手臂','背+肩','有氧','休息'];
+
+// 每個訓練部位的預設動作(依你的課表),點擊可以快速新增/移除
+const PRESET_EXERCISES = {
+  '肩+腿': [
+    {label:'肩', items:['啞鈴肩推','啞鈴飛鳥','槓鈴肩推','坐姿槓鈴肩推','面拉','啞鈴反向飛鳥','反向蝴蝶機','Cable側平舉']},
+    {label:'腿', items:['槓鈴深蹲','硬舉','夾腿','臀推']},
+  ],
+  '胸+背': [
+    {label:'胸', items:['槓鈴臥推','上斜槓鈴臥推','啞鈴臥推','上斜啞鈴臥推','雙槓撐體','蝴蝶機夾胸','Cable下胸夾胸','器械上斜臥推','器械臥推','器械坐姿下胸','器械坐姿下胸推']},
+    {label:'背', items:['槓鈴划船(正)','槓鈴划船(反)','引體向上','坐姿划船','T-bar','反手高位下拉','正手高位下拉','直臂下壓']},
+  ],
+  '手臂': [
+    {label:'手臂', items:['啞鈴彎舉','槓鈴彎舉','三頭繩索下拉','碎顱者','啞鈴頸後臂屈伸','Cable 二頭彎舉','Cable 三頭']},
+  ],
+  '背+肩': [
+    {label:'背', items:['槓鈴划船(正)','槓鈴划船(反)','引體向上','坐姿划船','T-bar','反手高位下拉','正手高位下拉','直臂下壓']},
+    {label:'肩', items:['啞鈴肩推','啞鈴飛鳥','槓鈴肩推','坐姿槓鈴肩推','面拉','啞鈴反向飛鳥','反向蝴蝶機','Cable側平舉']},
+  ],
+  '有氧': [
+    {label:'有氧', items:['跑步機','交叉訓練機','階梯機']},
+  ],
+};
+
+const COMMON_EXERCISES = [...new Set(
+  Object.values(PRESET_EXERCISES).flat().flatMap(g=>g.items)
+)];
+document.getElementById('exerciseNameList').innerHTML =
+  COMMON_EXERCISES.map(n=>`<option value="${n}"></option>`).join('');
+
+// workoutLogs[dateStr] = {bodyPart:'', exercises:[{id,name,sets:[{reps,weight}]}]}
+const workoutLogs = {};
+function ensureWorkoutLog(dateStr){
+  if(!workoutLogs[dateStr]) workoutLogs[dateStr] = {bodyPart:'', exercises:[]};
+  if(!workoutLogs[dateStr].exercises) workoutLogs[dateStr].exercises = [];
+  return workoutLogs[dateStr];
+}
+
+function workoutDocRef(dateStr){ return doc(db, "dietTrackerUsers", currentUser.uid, "workouts", dateStr); }
+
+async function loadWorkoutLogFor(dateStr){
+  if(!currentUser) return;
+  try{
+    const snap = await getDoc(workoutDocRef(dateStr));
+    if(snap.exists()){
+      const data = snap.data();
+      workoutLogs[dateStr] = {bodyPart:data.bodyPart||'', exercises:data.exercises||[]};
+    } else if(!workoutLogs[dateStr]){
+      workoutLogs[dateStr] = {bodyPart:'', exercises:[]};
+    }
+  }catch(e){ console.error("讀取訓練紀錄失敗:", e); }
+  if(!workoutPage || workoutPage.style.display==='none') return;
+  renderWorkoutPage();
+}
+
+async function saveCloudWorkout(){
+  if(!currentUser) return;
+  const log = ensureWorkoutLog(activeDate);
+  try{
+    await setDoc(workoutDocRef(activeDate), {
+      bodyPart: log.bodyPart || '',
+      exercises: log.exercises || [],
+    });
+  }catch(e){ console.error("寫入訓練紀錄失敗:", e); }
+}
+
+async function openWorkoutPage(){
+  if(currentUser && !workoutLogs[activeDate]){
+    await loadWorkoutLogFor(activeDate);
+  }
+  renderWorkoutPage();
+}
+
+function renderWorkoutPage(){
+  const d = parseDateStr(activeDate);
+  document.getElementById('workoutDateLabel').textContent =
+    `${d.getMonth()+1}/${d.getDate()}(週${WEEKDAY_LABEL[d.getDay()]})`;
+
+  const log = ensureWorkoutLog(activeDate);
+
+  const chipsEl = document.getElementById('bodypartChips');
+  const customInput = document.getElementById('bodypartCustomInput');
+  const isPreset = BODY_PART_PRESETS.includes(log.bodyPart);
+  chipsEl.innerHTML = BODY_PART_PRESETS.map(bp=>
+    `<button class="bodypart-chip${log.bodyPart===bp?' active':''}" data-bp="${bp}">${bp}</button>`
+  ).join('') + `<button class="bodypart-chip${(log.bodyPart && !isPreset)?' active':''}" id="bodypartCustomChip">自訂</button>`;
+  chipsEl.querySelectorAll('.bodypart-chip[data-bp]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const bp = btn.getAttribute('data-bp');
+      log.bodyPart = (log.bodyPart===bp) ? '' : bp;
+      renderWorkoutPage();
+      saveCloudWorkout();
+    };
+  });
+  document.getElementById('bodypartCustomChip').onclick = ()=>{
+    customInput.style.display = '';
+    customInput.value = (log.bodyPart && !isPreset) ? log.bodyPart : '';
+    customInput.focus();
+  };
+  customInput.style.display = (log.bodyPart && !isPreset) ? '' : 'none';
+  customInput.onkeydown = (e)=>{
+    if(e.key==='Enter'){
+      log.bodyPart = customInput.value.trim();
+      renderWorkoutPage();
+      saveCloudWorkout();
+    }
+  };
+
+  const presetEl = document.getElementById('presetExercises');
+  const presetGroups = PRESET_EXERCISES[log.bodyPart];
+  if(!presetGroups){
+    presetEl.innerHTML = '';
+  } else {
+    presetEl.innerHTML = presetGroups.map(g=>`
+      <div class="preset-group">
+        <div class="preset-group-label">${g.label}(點擊快速新增/移除)</div>
+        <div class="preset-chips">
+          ${g.items.map(name=>{
+            const added = log.exercises.some(ex=>ex.name===name);
+            return `<button class="preset-chip${added?' added':''}" data-name="${name}">${name}</button>`;
+          }).join('')}
+        </div>
+      </div>
+    `).join('');
+    presetEl.querySelectorAll('.preset-chip').forEach(btn=>{
+      btn.onclick = ()=>{
+        const name = btn.getAttribute('data-name');
+        const existing = log.exercises.find(ex=>ex.name===name);
+        if(existing){
+          log.exercises = log.exercises.filter(ex=>ex.name!==name);
+        } else {
+          log.exercises.push({id: Date.now()+'-'+Math.random().toString(36).slice(2,7), name, sets:[{reps:'', weight:''}]});
+        }
+        renderWorkoutPage();
+        saveCloudWorkout();
+      };
+    });
+  }
+
+  const listEl = document.getElementById('exerciseListContainer');
+  if(log.exercises.length===0){
+    listEl.innerHTML = '<div class="workout-empty">今天還沒有新增任何動作</div>';
+  } else {
+    listEl.innerHTML = '';
+    log.exercises.forEach(ex=>{
+      const card = document.createElement('div');
+      card.className = 'exercise-card';
+      let volume = 0;
+      const setsHtml = ex.sets.map((s,si)=>{
+        volume += (Number(s.reps)||0) * (Number(s.weight)||0);
+        return `
+          <div class="set-row" data-set-i="${si}">
+            <div class="set-idx">${si+1}</div>
+            <input type="number" min="0" step="1" class="set-reps" value="${s.reps??''}" placeholder="次數">
+            <input type="number" min="0" step="0.5" class="set-weight" value="${s.weight??''}" placeholder="重量kg">
+            <button class="set-del" title="刪除這組">✕</button>
+          </div>`;
+      }).join('');
+      card.innerHTML = `
+        <div class="exercise-card-head">
+          <span class="ex-name">${ex.name}</span>
+          <button class="ex-del" title="刪除整個動作">刪除動作</button>
+        </div>
+        <div class="set-labels"><span></span><span>次數</span><span>重量(kg)</span><span></span></div>
+        ${setsHtml}
+        <button class="set-add-btn">＋ 加一組</button>
+        <div class="exercise-vol">這個動作總量:${Math.round(volume)} kg・次</div>
+      `;
+      card.querySelector('.ex-del').onclick = ()=>{
+        log.exercises = log.exercises.filter(e=>e.id!==ex.id);
+        renderWorkoutPage();
+        saveCloudWorkout();
+      };
+      card.querySelector('.set-add-btn').onclick = ()=>{
+        const last = ex.sets[ex.sets.length-1];
+        ex.sets.push({reps: last?last.reps:'', weight: last?last.weight:''});
+        renderWorkoutPage();
+        saveCloudWorkout();
+      };
+      card.querySelectorAll('.set-row').forEach(row=>{
+        const si = Number(row.getAttribute('data-set-i'));
+        row.querySelector('.set-reps').onchange = (e)=>{
+          ex.sets[si].reps = Number(e.target.value)||0;
+          renderWorkoutPage();
+          saveCloudWorkout();
+        };
+        row.querySelector('.set-weight').onchange = (e)=>{
+          ex.sets[si].weight = Number(e.target.value)||0;
+          renderWorkoutPage();
+          saveCloudWorkout();
+        };
+        row.querySelector('.set-del').onclick = ()=>{
+          ex.sets.splice(si,1);
+          renderWorkoutPage();
+          saveCloudWorkout();
+        };
+      });
+      listEl.appendChild(card);
+    });
+  }
+
+  const totalSets = log.exercises.reduce((s,ex)=>s+ex.sets.length,0);
+  const totalVolume = log.exercises.reduce((s,ex)=> s + ex.sets.reduce((s2,st)=> s2+(Number(st.reps)||0)*(Number(st.weight)||0),0), 0);
+  document.getElementById('workoutSummary').innerHTML =
+    `<span>動作數 <b>${log.exercises.length}</b></span><span>總組數 <b>${totalSets}</b></span><span>總訓練量 <b>${Math.round(totalVolume)}</b> kg・次</span>`;
+}
+
+document.getElementById('exerciseAddBtn').onclick = ()=>{
+  const nameEl = document.getElementById('exerciseNameInput');
+  const name = nameEl.value.trim();
+  if(!name) return;
+  const log = ensureWorkoutLog(activeDate);
+  log.exercises.push({id: Date.now()+'-'+Math.random().toString(36).slice(2,7), name, sets:[{reps:'', weight:''}]});
+  nameEl.value = '';
+  renderWorkoutPage();
+  saveCloudWorkout();
+};
+
+document.getElementById('workoutPrevDayBtn').onclick = async ()=>{
+  const d = parseDateStr(activeDate); d.setDate(d.getDate()-1);
+  activeDate = toDateStr(d);
+  const targetMonday = getMonday(d);
+  const nowMonday = getMonday(new Date());
+  weekOffset = Math.round((targetMonday - nowMonday) / (7*24*60*60*1000));
+  await loadLogFor(activeDate);
+  await loadWorkoutLogFor(activeDate);
+  renderAll();
+  renderWorkoutPage();
+};
+document.getElementById('workoutNextDayBtn').onclick = async ()=>{
+  const d = parseDateStr(activeDate); d.setDate(d.getDate()+1);
+  activeDate = toDateStr(d);
+  const targetMonday = getMonday(d);
+  const nowMonday = getMonday(new Date());
+  weekOffset = Math.round((targetMonday - nowMonday) / (7*24*60*60*1000));
+  await loadLogFor(activeDate);
+  await loadWorkoutLogFor(activeDate);
+  renderAll();
+  renderWorkoutPage();
+};
+
 onAuthStateChanged(auth, async (user)=>{
   currentUser = user;
   if(user){
@@ -1512,10 +1829,12 @@ onAuthStateChanged(auth, async (user)=>{
     renderAuthBar();
     await loadWeights();
     await loadLogFor(activeDate);
+    await loadWorkoutLogFor(activeDate);
     refreshWeeklyAndStreak();
     refreshTrendChart();
   } else {
     for(const k in logs) delete logs[k];
+    for(const k in workoutLogs) delete workoutLogs[k];
     weightEntries = [];
     renderAuthBar();
     renderAll();
