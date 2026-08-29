@@ -1584,6 +1584,7 @@ async function refreshWeeklyAndStreak(){
   document.getElementById('wkProtein').textContent = count ? Math.round(sumPPct/count)+'%' : '尚無資料';
   document.getElementById('wkKcal').textContent = count ? Math.round(sumKPct/count)+'%' : '尚無資料';
 
+  const STREAK_HIT_RATIO = 0.9; // 蛋白質達到目標的9成就算維持連續天數
   let streak = 0;
   for(let i=0;i<60;i++){
     const d = new Date(today); d.setDate(today.getDate()-i);
@@ -1592,7 +1593,7 @@ async function refreshWeeklyAndStreak(){
     if(!raw) break;
     const totals = totalsFromRaw(raw, ds);
     const target = computeTargetsForDate(ds, raw.typeOverride || typeOfDate(ds));
-    if(totals.p >= target.p) streak++; else break;
+    if(totals.p >= target.p*STREAK_HIT_RATIO) streak++; else break;
   }
   renderStreak(streak);
 }
