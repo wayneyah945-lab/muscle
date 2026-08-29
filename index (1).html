@@ -19,6 +19,7 @@
     --water: #2E76B6;
     --train: #2B6E63;
     --rest: #8A7F6A;
+    --cardio: #C97A3D;
     --done-bg: #F0EDE3;
   }
   *{box-sizing:border-box;}
@@ -61,13 +62,54 @@
   .save-settings-btn{background:var(--ink);color:var(--bg);border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
 
   /* page tabs */
-  .pagetabs{display:flex;gap:8px;margin:16px 0 6px;}
-  .pagetab{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink-soft);font-family:'Noto Sans TC',sans-serif;}
+  .pagetabs{display:flex;gap:8px;margin:16px 0 6px;flex-wrap:wrap;}
+  .pagetab{flex:1 1 auto;min-width:86px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink-soft);font-family:'Noto Sans TC',sans-serif;}
   .pagetab.active{background:var(--ink);color:var(--bg);border-color:var(--ink);}
 
   .weeknav{display:flex;align-items:center;justify-content:space-between;margin-top:16px;font-size:12px;color:var(--ink-soft);}
   .weeknav button{background:none;border:1px solid var(--line);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px;color:var(--ink);}
   .weeknav button:hover{background:var(--done-bg);}
+
+  .bodypart-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:14px 0;}
+  .bodypart-label{font-size:13px;font-weight:600;margin-bottom:8px;}
+  .bodypart-chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .bodypart-chip{background:none;border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:12px;cursor:pointer;color:var(--ink-soft);font-family:'Noto Sans TC',sans-serif;}
+  .bodypart-chip:hover{background:var(--done-bg);}
+  .bodypart-chip.active{background:var(--train);border-color:var(--train);color:#fff;}
+  #bodypartCustomInput{width:100%;margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;}
+
+  .preset-exercises{margin-bottom:14px;}
+  .preset-group{margin-bottom:8px;}
+  .preset-group-label{font-size:11px;color:var(--ink-soft);margin-bottom:5px;}
+  .preset-chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .preset-chip{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:12px;cursor:pointer;color:var(--ink-soft);font-family:'Noto Sans TC',sans-serif;}
+  .preset-chip:hover{background:var(--done-bg);}
+  .preset-chip.added{background:var(--protein);border-color:var(--protein);color:#fff;}
+
+  .exercise-add-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;}
+  .exercise-add-card input{flex:1;min-width:160px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;}
+  .exercise-add-card button{background:var(--train);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
+  .exercise-add-card button:hover{opacity:.9;}
+
+  .exercise-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
+  .exercise-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .exercise-card-head .ex-name{font-size:14px;font-weight:600;}
+  .exercise-card-head .ex-del{background:none;border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-size:12px;color:var(--kcal);cursor:pointer;}
+  .exercise-card-head .ex-del:hover{background:var(--done-bg);}
+  .set-row{display:grid;grid-template-columns:28px 1fr 1fr 28px;gap:8px;align-items:center;margin-bottom:6px;}
+  .set-row .set-idx{font-size:12px;color:var(--ink-soft);text-align:center;}
+  .set-row input{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;}
+  .set-row .set-del{background:none;border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--kcal);cursor:pointer;padding:5px;}
+  .set-row .set-del:hover{background:var(--done-bg);}
+  .set-labels{display:grid;grid-template-columns:28px 1fr 1fr 28px;gap:8px;font-size:10.5px;color:var(--ink-soft);margin-bottom:4px;}
+  .set-add-btn{width:100%;background:none;border:1px dashed var(--line);border-radius:8px;padding:7px;font-size:12px;color:var(--ink-soft);cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:4px;}
+  .set-add-btn:hover{background:var(--done-bg);}
+  .exercise-vol{font-size:11px;color:var(--ink-soft);margin-top:8px;text-align:right;}
+
+  .workout-summary{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--ink-soft);}
+  .workout-summary b{color:var(--ink);font-family:'Space Grotesk',sans-serif;}
+  .workout-empty{font-size:12px;color:var(--ink-soft);text-align:center;padding:20px 0;}
+
   .tabs{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:10px 0 18px;}
   .tab{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 2px 7px;text-align:center;cursor:pointer;transition:all .15s ease;position:relative;}
   .tab .d{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;}
@@ -77,6 +119,7 @@
   .tab.active .d, .tab.active .k, .tab.active .dt{color:var(--bg);}
   .tab.active.train{background:var(--train);border-color:var(--train);}
   .tab.active.rest{background:var(--rest);border-color:var(--rest);}
+  .tab.active.cardio{background:var(--cardio);border-color:var(--cardio);}
   .tab.today::after{content:"";position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--kcal);}
 
   .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:6px;}
@@ -92,6 +135,19 @@
   .kcal .stat-num{color:var(--kcal);}
   .fat .stat-num{color:var(--fat);}
   .target-note{font-size:11px;color:var(--ink-soft);margin:0 0 14px;text-align:right;}
+
+  .daytype-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .daytype-label{font-size:13px;}
+  .daytype-label b{font-family:'Space Grotesk',sans-serif;}
+  .daytype-default-note{font-size:11px;color:var(--ink-soft);margin-left:6px;}
+  .daytype-btns{display:flex;gap:6px;align-items:center;}
+  .daytype-btn{background:none;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;color:var(--ink-soft);}
+  .daytype-btn:hover{background:var(--done-bg);}
+  .daytype-btn.active.rest{background:var(--rest);border-color:var(--rest);color:#fff;}
+  .daytype-btn.active.train{background:var(--train);border-color:var(--train);color:#fff;}
+  .daytype-btn.active.cardio{background:var(--cardio);border-color:var(--cardio);color:#fff;}
+  .daytype-reset{background:none;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:11px;cursor:pointer;color:var(--ink-soft);display:none;}
+  .daytype-reset:hover{background:var(--done-bg);}
 
   .water-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
   .water-info{font-size:13px;}
@@ -142,6 +198,21 @@
   .swap-btn{width:24px;height:24px;flex-shrink:0;border-radius:7px;border:1px solid var(--line);background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;color:var(--ink-soft);}
   .swap-btn:hover{background:var(--done-bg);}
 
+  .custom-section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+  .custom-section h3{margin:0 0 4px;font-size:14px;}
+  .custom-hint{font-size:11px;color:var(--ink-soft);margin:0 0 10px;}
+  .custom-form input[type="text"]{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;margin-bottom:8px;}
+  .custom-form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;}
+  .custom-form-grid label{font-size:11px;color:var(--ink-soft);display:block;margin-bottom:3px;}
+  .custom-form-grid input{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;}
+  .custom-add-btn{width:100%;background:var(--kcal);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
+  .custom-add-btn:hover{opacity:.9;}
+  .custom-agg{font-size:12px;color:var(--ink-soft);margin:12px 0 2px;text-align:right;}
+  li.item.custom-item{cursor:default;}
+  li.item.custom-item:hover{background:none;}
+  .del-btn{width:24px;height:24px;flex-shrink:0;border-radius:7px;border:1px solid var(--line);background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;color:var(--kcal);}
+  .del-btn:hover{background:var(--done-bg);}
+
   .weight-section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
   .weight-section h3{margin:0 0 10px;font-size:14px;}
   .weight-input-row{display:flex;gap:8px;margin-bottom:12px;}
@@ -149,6 +220,17 @@
   .weight-input-row button{background:var(--ink);color:var(--bg);border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
   .weight-chart{width:100%;height:70px;display:block;}
   .weight-list{font-size:11px;color:var(--ink-soft);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap;}
+
+  .trend-section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+  .trend-section h3{margin:0 0 10px;font-size:14px;}
+  .trend-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--ink-soft);margin-bottom:6px;}
+  .trend-legend-item{display:flex;align-items:center;gap:5px;}
+  .trend-legend-item .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .trend-legend-item .dot.protein{background:var(--protein);}
+  .trend-legend-item .dot.kcal{background:var(--kcal);}
+  .trend-legend-note{font-size:10.5px;}
+  .trend-chart{width:100%;height:100px;display:block;}
+  .trend-list{font-size:11px;color:var(--ink-soft);margin-top:8px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;}
 
   footer{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-soft);display:flex;justify-content:space-between;align-items:center;}
   .reset-btn{font-family:'Noto Sans TC',sans-serif;font-size:12px;background:none;border:1px solid var(--line);border-radius:8px;padding:7px 12px;color:var(--ink);cursor:pointer;}
@@ -163,6 +245,33 @@
   table.subtable th{color:var(--ink-soft);font-weight:600;font-size:11px;}
   table.subtable td.num{text-align:right;font-family:'Space Grotesk',sans-serif;white-space:nowrap;}
   table.subtable tr:last-child td{border-bottom:none;}
+  .sub-cat-head{display:flex;align-items:center;justify-content:space-between;}
+  .sub-cat-head.today-head{background:var(--done-bg);}
+  .day-type-badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;color:#fff;}
+  .day-type-badge.train{background:var(--train);}
+  .day-type-badge.rest{background:var(--rest);}
+  .day-type-badge.cardio{background:var(--cardio);}
+
+  /* calendar page */
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:5px;}
+  .cal-weekday-row{margin-bottom:8px;}
+  .cal-weekday-row span{text-align:center;font-size:11px;color:var(--ink-soft);font-weight:600;}
+  .cal-cell{
+    aspect-ratio:1/1;border-radius:10px;border:1px solid var(--line);background:var(--panel);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    cursor:pointer;font-size:12px;position:relative;
+  }
+  .cal-cell:hover{background:var(--done-bg);}
+  .cal-cell.empty{visibility:hidden;cursor:default;}
+  .cal-cell .num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;}
+  .cal-cell.hit{background:var(--protein-soft, #E4EFEC);border-color:var(--protein);}
+  .cal-cell.hit .num{color:var(--protein);}
+  .cal-cell.miss{background:var(--done-bg);}
+  .cal-cell.nodata .num{color:var(--ink-soft);}
+  .cal-cell.today-cell{box-shadow:0 0 0 2px var(--kcal) inset;}
+  .cal-dot{width:5px;height:5px;border-radius:50%;margin-top:2px;}
+  .cal-dot.hit{background:var(--protein);}
+  .cal-dot.miss{background:var(--ink-soft);}
 </style>
 </head>
 <body>
@@ -170,7 +279,7 @@
   <header>
     <div class="title-row">
       <div>
-        <h1>今天吃了嗎?</h1>
+        <h1>巨巨成長營💪🏻</h1>
         <p class="sub">點項目打勾記錄,自動累計蛋白質、熱量與脂肪進度</p>
       </div>
       <button class="gear-btn" id="gearBtn" title="設定">⚙</button>
@@ -198,6 +307,12 @@
           <div><label>熱量(kcal)</label><input type="number" id="set_rest_k"></div>
           <div><label>脂肪(g)</label><input type="number" id="set_rest_f"></div>
         </div>
+        <div class="settings-group-label">有氧日目標(固定值)</div>
+        <div class="settings-grid">
+          <div><label>蛋白質(g)</label><input type="number" id="set_cardio_p"></div>
+          <div><label>熱量(kcal)</label><input type="number" id="set_cardio_k"></div>
+          <div><label>脂肪(g)</label><input type="number" id="set_cardio_f"></div>
+        </div>
       </div>
 
       <div class="settings-block" id="autoBlock">
@@ -213,6 +328,12 @@
           <div><label>熱量(kcal/kg)</label><input type="number" step="0.5" id="auto_rest_k"></div>
           <div><label>脂肪(g/kg)</label><input type="number" step="0.1" id="auto_rest_f"></div>
         </div>
+        <div class="settings-group-label">有氧日係數(每公斤體重)</div>
+        <div class="settings-grid">
+          <div><label>蛋白質(g/kg)</label><input type="number" step="0.1" id="auto_cardio_p"></div>
+          <div><label>熱量(kcal/kg)</label><input type="number" step="0.5" id="auto_cardio_k"></div>
+          <div><label>脂肪(g/kg)</label><input type="number" step="0.1" id="auto_cardio_f"></div>
+        </div>
         <div class="settings-hint">會用「當天或最近一次」記錄的體重去乘上面的係數。還沒記錄過體重時,用下面的預設體重計算:</div>
         <div class="default-weight-row">
           <label>預設體重(kg)</label>
@@ -227,6 +348,10 @@
   <div class="pagetabs">
     <button class="pagetab active" id="pageTrackBtn">今日追蹤</button>
     <button class="pagetab" id="pageSubBtn">替代食物表</button>
+    <button class="pagetab" id="pageWeekBtn">本週總表</button>
+    <button class="pagetab" id="pageWeightBtn">體重紀錄</button>
+    <button class="pagetab" id="pageWorkoutBtn">訓練紀錄</button>
+    <button class="pagetab" id="pageCalBtn">行事曆</button>
   </div>
 
   <div id="trackPage">
@@ -236,6 +361,16 @@
       <button id="nextWeekBtn">下週 ▶</button>
     </div>
     <div class="tabs" id="tabs"></div>
+
+    <div class="daytype-card" id="daytypeCard">
+      <div class="daytype-label">這天類型:<b id="daytypeCurrent">-</b><span class="daytype-default-note" id="daytypeDefaultNote"></span></div>
+      <div class="daytype-btns">
+        <button class="daytype-btn" id="dtRestBtn">休息日</button>
+        <button class="daytype-btn" id="dtTrainBtn">訓練日</button>
+        <button class="daytype-btn" id="dtCardioBtn">有氧日</button>
+        <button class="daytype-reset" id="dtResetBtn" title="還原成依星期判斷的預設值">還原預設</button>
+      </div>
+    </div>
 
     <div class="stats">
       <div class="stat-card protein">
@@ -277,24 +412,39 @@
       </div>
     </div>
 
-    <div class="weektable-section">
-      <h3>本週總表</h3>
-      <table class="weektable" id="weekTable">
-        <thead><tr><th>日期</th><th>類型</th><th>蛋白質</th><th>熱量</th><th>脂肪</th><th>喝水</th></tr></thead>
-        <tbody id="weekTableBody"></tbody>
-      </table>
-    </div>
-
     <div id="meals"></div>
 
-    <div class="weight-section">
-      <h3>體重紀錄</h3>
-      <div class="weight-input-row">
-        <input type="number" step="0.1" id="weightInput" placeholder="今天體重 (kg)">
-        <button id="weightSaveBtn">記錄</button>
+    <div class="custom-section">
+      <h3>其他 / 自訂項目</h3>
+      <p class="custom-hint">輸入食物名稱,如果是資料庫裡有的食物(替代食物表 + 菜單裡出現過的)會自動幫你換算蛋白質/熱量/脂肪;找不到的話手動填三個數字也可以,填完按下方按鈕直接打卡。</p>
+      <div class="custom-form">
+        <input type="text" id="customName" list="customFoodList" placeholder="食物名稱(例如:雞胸肉)" autocomplete="off">
+        <datalist id="customFoodList"></datalist>
+        <div id="customMatchHint" class="custom-hint" style="display:none;margin:-4px 0 8px;"></div>
+        <div class="custom-form-grid" style="grid-template-columns:1fr 2fr;">
+          <div><label>份量倍數</label><input type="number" step="0.25" min="0" id="customQty" value="1"></div>
+          <div><label>&nbsp;</label><div style="font-size:11px;color:var(--ink-soft);padding-top:6px;">比對到資料庫食物時,下面三個數字會自動依倍數換算,也可以再手動微調</div></div>
+        </div>
+        <div class="custom-form-grid">
+          <div><label>蛋白質(g)</label><input type="number" step="0.1" min="0" id="customP" placeholder="0"></div>
+          <div><label>熱量(kcal)</label><input type="number" step="1" min="0" id="customK" placeholder="0"></div>
+          <div><label>脂肪(g)</label><input type="number" step="0.1" min="0" id="customF" placeholder="0"></div>
+        </div>
+        <button class="custom-add-btn" id="customAddBtn">＋ 新增並打卡</button>
       </div>
-      <svg class="weight-chart" id="weightChart" viewBox="0 0 600 70" preserveAspectRatio="none"></svg>
-      <div class="weight-list" id="weightList"></div>
+      <div class="custom-agg" id="customAgg"></div>
+      <ul class="items" id="customList"></ul>
+    </div>
+
+    <div class="trend-section">
+      <h3>過去 30 天達成率趨勢</h3>
+      <div class="trend-legend">
+        <span class="trend-legend-item"><i class="dot protein"></i>蛋白質</span>
+        <span class="trend-legend-item"><i class="dot kcal"></i>熱量</span>
+        <span class="trend-legend-note">虛線=100% 達標線,超過100%以100%顯示</span>
+      </div>
+      <svg class="trend-chart" id="trendChart" viewBox="0 0 600 100" preserveAspectRatio="none"></svg>
+      <div class="trend-list" id="trendList"></div>
     </div>
 
     <footer>
@@ -306,6 +456,64 @@
   <div id="subPage" style="display:none;">
     <p class="sub-intro">菜單以外自己想吃的食物,可以查這張表估算蛋白質/熱量/脂肪,再回到「今日追蹤」用份量倍數欄位換算成你實際吃的量。</p>
     <div id="subCatContainer"></div>
+  </div>
+
+  <div id="weekPage" style="display:none;">
+    <div class="weeknav">
+      <button id="prevWeekBtn2">◀ 上週</button>
+      <span id="weekLabel2"></span>
+      <button id="nextWeekBtn2">下週 ▶</button>
+    </div>
+    <div id="weekCardsContainer" style="margin-top:10px;"></div>
+  </div>
+
+  <div id="weightPage" style="display:none;">
+    <div class="weight-section">
+      <h3>體重紀錄</h3>
+      <div class="weight-input-row">
+        <input type="number" step="0.1" id="weightInput" placeholder="今天體重 (kg)">
+        <button id="weightSaveBtn">記錄</button>
+      </div>
+      <svg class="weight-chart" id="weightChart" viewBox="0 0 600 70" preserveAspectRatio="none"></svg>
+      <div class="weight-list" id="weightList"></div>
+    </div>
+  </div>
+
+  <div id="workoutPage" style="display:none;">
+    <div class="weeknav">
+      <button id="workoutPrevDayBtn">◀ 前一天</button>
+      <span id="workoutDateLabel"></span>
+      <button id="workoutNextDayBtn">後一天 ▶</button>
+    </div>
+
+    <div class="bodypart-card">
+      <div class="bodypart-label">今天訓練部位</div>
+      <div class="bodypart-chips" id="bodypartChips"></div>
+      <input type="text" id="bodypartCustomInput" placeholder="輸入自訂部位名稱後按 Enter" style="display:none;">
+    </div>
+
+    <div class="preset-exercises" id="presetExercises"></div>
+
+    <div class="exercise-add-card">
+      <input type="text" id="exerciseNameInput" list="exerciseNameList" placeholder="動作名稱(例如:臥推)" autocomplete="off">
+      <datalist id="exerciseNameList"></datalist>
+      <button id="exerciseAddBtn">＋ 新增動作</button>
+    </div>
+
+    <div id="exerciseListContainer"></div>
+
+    <div class="workout-summary" id="workoutSummary"></div>
+  </div>
+
+  <div id="calPage" style="display:none;">
+    <div class="weeknav">
+      <button id="prevMonthBtn">◀ 上個月</button>
+      <span id="monthLabel"></span>
+      <button id="nextMonthBtn">下個月 ▶</button>
+    </div>
+    <p class="sub-intro">綠色代表蛋白質有達標、灰色代表沒達標,點日期可以直接回到「今日追蹤」查看/補紀錄那一天。</p>
+    <div class="cal-grid cal-weekday-row" id="calWeekdayRow"></div>
+    <div class="cal-grid" id="calGrid"></div>
   </div>
 </div>
 
@@ -340,14 +548,17 @@ function v(name, qty, p, k, f){ return {name, qty, p, k, f}; }
 
 const TRAIN_ITEMS = [
   {meal:"早餐", items:[
-    {variants:[v("全蛋","3顆",21,220,15)]},
-    {variants:[v("全麥吐司","2片(約80g)",8,200,3)]},
-    {variants:[v("無糖豆漿","300ml",10,130,4)]},
-    {variants:[v("香蕉","1根",1,105,0)]},
+    {variants:[v("黑咖啡","1杯",0,2,0)]},
+    {variants:[v("燕麥片(乾)","50g",6,188,4), v("燕麥(泡濕,配餐一起吃)","50g乾(泡發後)",6,188,4)]},
+    {variants:[v("乳清蛋白粉","1匙(約30g)",24,120,2), v("無糖希臘優格","150g",15,90,0.6), v("水煮蛋","2顆(約100g)",12,140,10)]},
+    {variants:[v("無糖豆漿","300ml",10,130,4), v("牛奶(全脂)","300ml",10,183,10)]},
+    {variants:[v("香蕉","1根(約100g)",1,89,0.3), v("堅果(綜合)","15g",3,90,7.5)]},
+    {variants:[v("荷包蛋","2顆(約100g,含少許油煎)",12,180,14)]},
   ]},
   {meal:"上午點心", items:[
     {variants:[v("堅果","20g",4,120,10)]},
     {variants:[v("水果","1顆",0,80,0)]},
+    {variants:[v("燕麥片(乾)","30g",4,113,2), v("燕麥(泡濕,配餐一起吃)","30g乾(泡發後)",4,113,2)]},
   ]},
   {meal:"午餐", items:[
     {variants:[v("白飯","350g熟飯",8,455,1)]},
@@ -357,6 +568,7 @@ const TRAIN_ITEMS = [
   {meal:"下午點心", items:[
     {variants:[v("無糖優格","200g",10,120,4)]},
     {variants:[v("堅果","15g",3,90,8)]},
+    {variants:[v("燕麥片(乾)","30g",4,113,2), v("燕麥(泡濕,配餐一起吃)","30g乾(泡發後)",4,113,2)]},
   ]},
   {meal:"訓練後", items:[
     {variants:[v("乳清蛋白","1匙(約30g)",24,120,2)]},
@@ -371,13 +583,17 @@ const TRAIN_ITEMS = [
 
 const REST_ITEMS = [
   {meal:"早餐", items:[
-    {variants:[v("全蛋+蛋白","2全蛋+2蛋白",22,200,10)]},
-    {variants:[v("全麥吐司","1.5片(約60g)",6,150,2)]},
-    {variants:[v("無糖豆漿","250ml",8,110,3)]},
+    {variants:[v("黑咖啡","1杯",0,2,0)]},
+    {variants:[v("燕麥片(乾)","40g",5,150,3), v("燕麥(泡濕,配餐一起吃)","40g乾(泡發後)",5,150,3)]},
+    {variants:[v("乳清蛋白粉","1匙(約30g)",24,120,2), v("無糖希臘優格","100g",10,60,0.4), v("水煮蛋","1顆(約50g)",6,70,5)]},
+    {variants:[v("無糖豆漿","250ml",8,110,3), v("牛奶(全脂)","200ml",7,122,7)]},
+    {variants:[v("堅果(綜合)","15g",3,90,7.5)]},
+    {variants:[v("荷包蛋","2顆(約100g,含少許油煎)",12,180,14)]},
   ]},
   {meal:"上午點心", items:[
     {variants:[v("堅果","20g",4,120,10)]},
     {variants:[v("水果","1份",1,100,0)]},
+    {variants:[v("燕麥片(乾)","30g",4,113,2), v("燕麥(泡濕,配餐一起吃)","30g乾(泡發後)",4,113,2)]},
   ]},
   {meal:"午餐", items:[
     {variants:[v("白飯","250g熟飯",6,325,1)]},
@@ -387,6 +603,7 @@ const REST_ITEMS = [
   {meal:"下午點心", items:[
     {variants:[v("無糖優格","200g",10,120,4)]},
     {variants:[v("堅果","20g",4,120,10)]},
+    {variants:[v("燕麥片(乾)","30g",4,113,2), v("燕麥(泡濕,配餐一起吃)","30g乾(泡發後)",4,113,2)]},
   ]},
   {meal:"晚餐", items:[
     {variants:[v("糙米飯","150g熟飯",4,195,1)]},
@@ -396,6 +613,7 @@ const REST_ITEMS = [
   ]},
   {meal:"睡前(可選)", items:[
     {variants:[v("茅屋起司或優格","150g",12,120,3)]},
+    {variants:[v("燕麥片(乾)","25g",3,94,2), v("燕麥(泡濕,配餐一起吃)","25g乾(泡發後)",3,94,2)]},
   ]},
 ];
 
@@ -405,6 +623,7 @@ const SUBSTITUTE_FOODS = [
     {name:"雞胸肉", qty:"100g", p:31, k:165, f:4},
     {name:"雞腿肉(去皮)", qty:"100g", p:26, k:187, f:9},
     {name:"雞蛋", qty:"1顆(約50g)", p:6, k:70, f:5},
+    {name:"荷包蛋(煎)", qty:"1顆(約50g,含少許油)", p:6, k:90, f:7},
     {name:"鮭魚", qty:"100g", p:20, k:208, f:13},
     {name:"鯛魚/鱸魚", qty:"100g", p:22, k:128, f:4},
     {name:"牛肉(瘦)", qty:"100g", p:26, k:200, f:9},
@@ -414,6 +633,16 @@ const SUBSTITUTE_FOODS = [
     {name:"無糖希臘優格", qty:"100g", p:10, k:60, f:0.4},
     {name:"茅屋起司", qty:"100g", p:11, k:98, f:4},
     {name:"乳清蛋白粉", qty:"30g", p:24, k:120, f:2},
+    {name:"牛奶(全脂)", qty:"300ml", p:10, k:183, f:10},
+    {name:"蝦仁", qty:"100g", p:20, k:99, f:1},
+    {name:"炸雞腿", qty:"100g(連皮,含裹粉)", p:18, k:280, f:20},
+    {name:"炸雞腿(去皮)", qty:"100g(含裹粉)", p:20, k:220, f:13},
+    {name:"雞腿排", qty:"100g(連皮,煎)", p:20, k:220, f:15},
+    {name:"雞腿排(去皮)", qty:"100g(去皮,煎)", p:23, k:170, f:8},
+    {name:"烤雞腿", qty:"100g(連皮,烤)", p:22, k:210, f:14},
+    {name:"烤雞腿(去皮)", qty:"100g(去皮,烤)", p:25, k:165, f:7},
+    {name:"炸排骨", qty:"100g(含裹粉)", p:20, k:290, f:20},
+    {name:"滷排骨", qty:"100g", p:20, k:230, f:15},
   ]},
   {cat:"碳水化合物類", rows:[
     {name:"白飯(熟)", qty:"100g", p:2.5, k:130, f:0.3},
@@ -423,6 +652,8 @@ const SUBSTITUTE_FOODS = [
     {name:"全麥吐司", qty:"1片(約40g)", p:4, k:100, f:1.5},
     {name:"燕麥片(乾)", qty:"40g", p:5, k:150, f:3},
     {name:"義大利麵(熟)", qty:"100g", p:5, k:158, f:1},
+    {name:"果醬吐司", qty:"1片(約50g,含果醬)", p:4, k:150, f:2},
+    {name:"燕麥餅乾", qty:"1片(約20g)", p:2, k:90, f:4},
   ]},
   {cat:"蔬菜 / 油脂 / 其他", rows:[
     {name:"炒青菜(少油)", qty:"100g", p:2, k:55, f:3},
@@ -433,7 +664,24 @@ const SUBSTITUTE_FOODS = [
     {name:"香蕉", qty:"1根(約100g)", p:1, k:89, f:0.3},
     {name:"蘋果", qty:"1顆(約180g)", p:0.5, k:95, f:0.3},
   ]},
+  {cat:"常見外食 / 早餐店", rows:[
+    {name:"蛋餅", qty:"1份(約150g,原味)", p:8, k:280, f:14},
+    {name:"三明治(火腿蛋)", qty:"1份(約200g)", p:15, k:350, f:14},
+    {name:"可頌", qty:"1個(約60g)", p:5, k:270, f:14},
+    {name:"披薩(起司)", qty:"1片(約100g)", p:11, k:270, f:10},
+  ]},
 ];
+
+// ---------- 自訂項目用的食物名稱對照表(合併替代食物表 + 訓練/休息菜單裡出現過的所有食物) ----------
+const FOOD_LOOKUP = {};
+SUBSTITUTE_FOODS.forEach(cat=> cat.rows.forEach(r=>{
+  if(!FOOD_LOOKUP[r.name]) FOOD_LOOKUP[r.name] = {qty:r.qty, p:r.p, k:r.k, f:r.f};
+}));
+[...TRAIN_ITEMS, ...REST_ITEMS].forEach(mg=> mg.items.forEach(it=> it.variants.forEach(vr=>{
+  if(!FOOD_LOOKUP[vr.name]) FOOD_LOOKUP[vr.name] = {qty:vr.qty, p:vr.p, k:vr.k, f:vr.f};
+})));
+document.getElementById('customFoodList').innerHTML =
+  Object.keys(FOOD_LOOKUP).map(n=>`<option value="${n}"></option>`).join('');
 
 function renderSubstitutePage(){
   const container = document.getElementById('subCatContainer');
@@ -452,16 +700,40 @@ function renderSubstitutePage(){
 
 const pageTrackBtn = document.getElementById('pageTrackBtn');
 const pageSubBtn = document.getElementById('pageSubBtn');
+const pageWeekBtn = document.getElementById('pageWeekBtn');
+const pageWeightBtn = document.getElementById('pageWeightBtn');
+const pageWorkoutBtn = document.getElementById('pageWorkoutBtn');
+const pageCalBtn = document.getElementById('pageCalBtn');
 const trackPage = document.getElementById('trackPage');
 const subPage = document.getElementById('subPage');
-pageTrackBtn.onclick = ()=>{
-  pageTrackBtn.classList.add('active'); pageSubBtn.classList.remove('active');
-  trackPage.style.display=''; subPage.style.display='none';
-};
-pageSubBtn.onclick = ()=>{
-  pageSubBtn.classList.add('active'); pageTrackBtn.classList.remove('active');
-  trackPage.style.display='none'; subPage.style.display='';
-};
+const weekPage = document.getElementById('weekPage');
+const weightPage = document.getElementById('weightPage');
+const workoutPage = document.getElementById('workoutPage');
+const calPage = document.getElementById('calPage');
+function showPage(which){
+  pageTrackBtn.classList.toggle('active', which==='track');
+  pageSubBtn.classList.toggle('active', which==='sub');
+  pageWeekBtn.classList.toggle('active', which==='week');
+  pageWeightBtn.classList.toggle('active', which==='weight');
+  pageWorkoutBtn.classList.toggle('active', which==='workout');
+  pageCalBtn.classList.toggle('active', which==='cal');
+  trackPage.style.display = which==='track' ? '' : 'none';
+  subPage.style.display = which==='sub' ? '' : 'none';
+  weekPage.style.display = which==='week' ? '' : 'none';
+  weightPage.style.display = which==='weight' ? '' : 'none';
+  workoutPage.style.display = which==='workout' ? '' : 'none';
+  calPage.style.display = which==='cal' ? '' : 'none';
+  if(which==='week') renderWeekCardsPage();
+  if(which==='cal') renderCalendarPage();
+  if(which==='weight') renderWeightChart(weightEntries);
+  if(which==='workout') openWorkoutPage();
+}
+pageTrackBtn.onclick = ()=> showPage('track');
+pageSubBtn.onclick = ()=> showPage('sub');
+pageWeekBtn.onclick = ()=> showPage('week');
+pageWeightBtn.onclick = ()=> showPage('weight');
+pageWorkoutBtn.onclick = ()=> showPage('workout');
+pageCalBtn.onclick = ()=> showPage('cal');
 renderSubstitutePage();
 
 // ---------- 主追蹤功能 ----------
@@ -471,12 +743,14 @@ const WEEKDAY_LABEL = ['日','一','二','三','四','五','六'];
 let SETTINGS = {
   mode: 'manual',
   manualTargets: {
-    train: {p:170, k:3000, f:85},
-    rest:  {p:155, k:2800, f:78},
+    train:  {p:170, k:3000, f:85},
+    rest:   {p:155, k:2800, f:78},
+    cardio: {p:160, k:3000, f:82},
   },
   autoMultipliers: {
-    train: {p:2.2, k:36, f:1.0},
-    rest:  {p:2.0, k:33, f:0.9},
+    train:  {p:2.2, k:36, f:1.0},
+    rest:   {p:2.0, k:33, f:0.9},
+    cardio: {p:2.0, k:35, f:0.95},
   },
   defaultWeight: 82,
 };
@@ -488,6 +762,8 @@ function toDateStr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.
 function parseDateStr(s){ const [y,m,dd] = s.split('-').map(Number); return new Date(y, m-1, dd); }
 function todayStr(){ return toDateStr(new Date()); }
 function typeOfDate(dateStr){ return WEEKDAY_TYPE[parseDateStr(dateStr).getDay()]; }
+function typeLabel(type){ return type==='train' ? '訓練日' : (type==='cardio' ? '有氧日' : '休息日'); }
+function typeLabelShort(type){ return type==='train' ? '訓練' : (type==='cardio' ? '有氧' : '休息'); }
 function getMonday(d){
   const day = d.getDay();
   const diff = (day===0? -6 : 1-day);
@@ -506,9 +782,13 @@ function getWeightOnOrBefore(dateStr){
   if(best) return best.weight;
   return weightEntries[0].weight;
 }
+function getWeightExact(dateStr){
+  const found = weightEntries.find(e=> e.date===dateStr);
+  return found ? found.weight : null;
+}
 
-function computeTargetsForDate(dateStr){
-  const type = typeOfDate(dateStr);
+function computeTargetsForDate(dateStr, forcedType){
+  const type = forcedType || resolveType(dateStr);
   if(SETTINGS.mode === 'auto'){
     const w = getWeightOnOrBefore(dateStr);
     const m = SETTINGS.autoMultipliers[type];
@@ -520,15 +800,29 @@ function computeTargetsForDate(dateStr){
 let activeDate = todayStr();
 let weekOffset = 0;
 
-// logs[dateStr] = {checked:Set, water:number, alts:{}, portions:{"mi-ii":數字倍數}}
+// logs[dateStr] = {checked:Set, water:number, alts:{}, portions:{"mi-ii":數字倍數}, custom:[{id,name,p,k,f}], typeOverride:null|'train'|'rest'|'cardio'}
 const logs = {};
 function ensureLog(dateStr){
-  if(!logs[dateStr]) logs[dateStr] = {checked:new Set(), water:0, alts:{}, portions:{}};
+  if(!logs[dateStr]) logs[dateStr] = {checked:new Set(), water:0, alts:{}, portions:{}, custom:[], typeOverride:null};
+  if(!logs[dateStr].custom) logs[dateStr].custom = [];
+  if(logs[dateStr].typeOverride===undefined) logs[dateStr].typeOverride = null;
   return logs[dateStr];
 }
 
+function customTotals(log){
+  let p=0,k=0,f=0;
+  (log.custom||[]).forEach(c=>{ p+=Number(c.p)||0; k+=Number(c.k)||0; f+=Number(c.f)||0; });
+  return {p,k,f};
+}
+
+// 該天實際套用的類型:如果該天有手動切換過(typeOverride),用手動的;否則沿用原本依星期判斷的預設值(預設值本身不變)
+function resolveType(dateStr){
+  const log = logs[dateStr];
+  return (log && log.typeOverride) ? log.typeOverride : typeOfDate(dateStr);
+}
+
 function getItemsForDate(dateStr){
-  return typeOfDate(dateStr)==='train' ? TRAIN_ITEMS : REST_ITEMS;
+  return resolveType(dateStr)==='train' ? TRAIN_ITEMS : REST_ITEMS;
 }
 
 function effectiveVariant(item, key, dateStr){
@@ -569,17 +863,152 @@ function renderTabs(){
 
   week.forEach(d=>{
     const ds = toDateStr(d);
-    const type = typeOfDate(ds);
+    const type = resolveType(ds);
     const el = document.createElement('div');
     el.className = 'tab' + (ds===activeDate ? ' active '+type : '') + (ds===today ? ' today' : '');
-    el.innerHTML = `<span class="d">${WEEKDAY_LABEL[d.getDay()]}</span><span class="dt">${pad(d.getMonth()+1)}/${pad(d.getDate())}</span><span class="k">${type==='train'?'訓練':'休息'}</span>`;
-    el.onclick = ()=>{ activeDate = ds; renderAll(); loadLogFor(ds); };
+    el.innerHTML = `<span class="d">${WEEKDAY_LABEL[d.getDay()]}</span><span class="dt">${pad(d.getMonth()+1)}/${pad(d.getDate())}</span><span class="k">${typeLabelShort(type)}</span>`;
+    el.onclick = ()=>{ activeDate = ds; renderAll(); loadLogFor(ds); loadWorkoutLogFor(ds); };
     tabsEl.appendChild(el);
   });
 }
 
-document.getElementById('prevWeekBtn').onclick = ()=>{ weekOffset--; renderAll(); refreshWeekTable(); };
-document.getElementById('nextWeekBtn').onclick = ()=>{ weekOffset++; renderAll(); refreshWeekTable(); };
+document.getElementById('prevWeekBtn').onclick = ()=>{ weekOffset--; renderAll(); };
+document.getElementById('nextWeekBtn').onclick = ()=>{ weekOffset++; renderAll(); };
+
+// ---------- 本週總表(卡片式,獨立分頁,獨立週次) ----------
+let weekOffset2 = 0;
+function weekDatesFor(offset){
+  const base = new Date();
+  const monday = getMonday(base);
+  monday.setDate(monday.getDate() + offset*7);
+  const arr = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(monday);
+    d.setDate(monday.getDate()+i);
+    arr.push(d);
+  }
+  return arr;
+}
+document.getElementById('prevWeekBtn2').onclick = ()=>{ weekOffset2--; renderWeekCardsPage(); };
+document.getElementById('nextWeekBtn2').onclick = ()=>{ weekOffset2++; renderWeekCardsPage(); };
+
+async function renderWeekCardsPage(){
+  const container = document.getElementById('weekCardsContainer');
+  document.getElementById('weekLabel2').textContent =
+    weekOffset2===0 ? '本週' : (weekOffset2>0 ? `第 +${weekOffset2} 週` : `第 ${weekOffset2} 週`);
+  const week = weekDatesFor(weekOffset2);
+  const today = todayStr();
+  const rows = [];
+  for(const d of week){
+    const ds = toDateStr(d);
+    let raw = logs[ds];
+    if(!raw && currentUser) raw = await fetchLogRaw(ds);
+    const type = (raw && raw.typeOverride) || typeOfDate(ds);
+    const target = computeTargetsForDate(ds, type);
+    const totals = raw ? totalsFromRaw(raw, ds) : {p:0,k:0,f:0};
+    const water = raw ? raw.water : 0;
+    rows.push({ds, d, target, totals, water, type});
+  }
+  container.innerHTML = rows.map(r=>{
+    const type = r.type;
+    const isToday = r.ds===today;
+    const pCls = r.totals.p >= r.target.p ? 'hit' : 'miss';
+    const kCls = r.totals.k >= r.target.k ? 'hit' : 'miss';
+    const fCls = r.totals.f >= r.target.f ? 'hit' : 'miss';
+    return `
+    <div class="sub-cat">
+      <div class="sub-cat-head${isToday?' today-head':''}">
+        <span>${pad(r.d.getMonth()+1)}/${pad(r.d.getDate())}(週${WEEKDAY_LABEL[r.d.getDay()]})${isToday?' · 今天':''}</span>
+        <span class="day-type-badge ${type}">${typeLabel(type)}</span>
+      </div>
+      <table class="subtable">
+        <tbody>
+          <tr><td>體重</td><td class="num">${getWeightExact(r.ds)!==null ? getWeightExact(r.ds)+'kg' : '-'}</td></tr>
+          <tr><td>蛋白質</td><td class="num ${pCls}">${r.totals.p} / ${r.target.p}g</td></tr>
+          <tr><td>熱量</td><td class="num ${kCls}">${r.totals.k} / ${r.target.k}kcal</td></tr>
+          <tr><td>脂肪</td><td class="num ${fCls}">${r.totals.f} / ${r.target.f}g</td></tr>
+          <tr><td>喝水</td><td class="num">${r.water}ml</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+  }).join('');
+}
+
+// ---------- 行事曆分頁 ----------
+let monthOffset = 0;
+document.getElementById('prevMonthBtn').onclick = ()=>{ monthOffset--; renderCalendarPage(); };
+document.getElementById('nextMonthBtn').onclick = ()=>{ monthOffset++; renderCalendarPage(); };
+
+document.getElementById('calWeekdayRow').innerHTML =
+  WEEKDAY_LABEL.map(l=>`<span>${l}</span>`).join('');
+
+async function renderCalendarPage(){
+  const base = new Date();
+  const y = base.getFullYear();
+  const m = base.getMonth() + monthOffset;
+  const firstOfMonth = new Date(y, m, 1);
+  const daysInMonth = new Date(y, m+1, 0).getDate();
+  const leadingBlanks = firstOfMonth.getDay(); // 0=Sun
+
+  document.getElementById('monthLabel').textContent = `${firstOfMonth.getFullYear()}年 ${firstOfMonth.getMonth()+1}月`;
+
+  const grid = document.getElementById('calGrid');
+  const today = todayStr();
+  const cells = [];
+
+  for(let i=0;i<leadingBlanks;i++) cells.push({empty:true});
+
+  for(let day=1; day<=daysInMonth; day++){
+    const d = new Date(y, m, day);
+    const ds = toDateStr(d);
+    cells.push({empty:false, d, ds});
+  }
+
+  // 先畫出骨架(避免等待資料時整頁空白),再非同步補上狀態
+  grid.innerHTML = cells.map(c=>{
+    if(c.empty) return `<div class="cal-cell empty"></div>`;
+    return `<div class="cal-cell nodata" data-date="${c.ds}"><span class="num">${c.d.getDate()}</span></div>`;
+  }).join('');
+
+  // 綁定點擊(不管有沒有資料都能點,回到追蹤頁該日,並同步切換到該日所在的那一週)
+  grid.querySelectorAll('.cal-cell[data-date]').forEach(el=>{
+    el.onclick = ()=>{
+      const ds = el.getAttribute('data-date');
+      activeDate = ds;
+      const targetMonday = getMonday(parseDateStr(ds));
+      const nowMonday = getMonday(new Date());
+      weekOffset = Math.round((targetMonday - nowMonday) / (7*24*60*60*1000));
+      showPage('track');
+      loadLogFor(ds);
+      loadWorkoutLogFor(ds);
+    };
+  });
+
+  if(!currentUser) return;
+
+  // 依序抓每天資料並更新樣式(用快取避免重複讀取)
+  for(const c of cells){
+    if(c.empty) continue;
+    if(c.ds > today) continue; // 未來日期不用抓
+    let raw = logs[c.ds];
+    if(!raw) raw = await fetchLogRaw(c.ds);
+    const cellEl = grid.querySelector(`.cal-cell[data-date="${c.ds}"]`);
+    if(!cellEl) continue;
+    cellEl.classList.remove('nodata');
+    if(c.ds===today) cellEl.classList.add('today-cell');
+    if(!raw){
+      cellEl.classList.add('nodata');
+      continue;
+    }
+    const totals = totalsFromRaw(raw, c.ds);
+    const target = computeTargetsForDate(c.ds, raw.typeOverride || typeOfDate(c.ds));
+    const isHit = totals.p >= target.p;
+    cellEl.classList.add(isHit ? 'hit' : 'miss');
+    const dot = document.createElement('div');
+    dot.className = 'cal-dot ' + (isHit ? 'hit' : 'miss');
+    cellEl.appendChild(dot);
+  }
+}
 
 function renderMeals(){
   const mealsEl = document.getElementById('meals');
@@ -650,6 +1079,85 @@ function renderMeals(){
   });
 }
 
+function renderCustomSection(){
+  const log = ensureLog(activeDate);
+  const listEl = document.getElementById('customList');
+  const aggEl = document.getElementById('customAgg');
+  const items = log.custom || [];
+
+  if(items.length===0){
+    listEl.innerHTML = '';
+    aggEl.textContent = '今天還沒有自訂項目';
+    return;
+  }
+
+  const t = customTotals(log);
+  aggEl.textContent = `合計 ${Math.round(t.p*10)/10}g 蛋白 · ${Math.round(t.k)} kcal · ${Math.round(t.f*10)/10}g 脂`;
+
+  listEl.innerHTML = '';
+  items.forEach(c=>{
+    const li = document.createElement('li');
+    li.className = 'item custom-item';
+    li.innerHTML = `
+      <span class="check" style="background:var(--protein);border-color:var(--protein);"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:1;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+      <span class="item-text">
+        <div class="item-name">${c.name}</div>
+      </span>
+      <span class="item-macro">${c.p||0}g · ${c.k||0}kcal · ${c.f||0}g脂</span>
+      <button class="del-btn" title="刪除">✕</button>
+    `;
+    li.querySelector('.del-btn').onclick = ()=>{
+      log.custom = log.custom.filter(x=>x.id!==c.id);
+      renderAll(); saveCloudLog();
+    };
+    listEl.appendChild(li);
+  });
+}
+
+// ---------- 自訂項目:輸入名稱自動比對食物資料庫並換算 ----------
+const customNameEl = document.getElementById('customName');
+const customQtyEl = document.getElementById('customQty');
+const customPEl = document.getElementById('customP');
+const customKEl = document.getElementById('customK');
+const customFEl = document.getElementById('customF');
+const customMatchHintEl = document.getElementById('customMatchHint');
+
+function applyCustomMatch(){
+  const name = customNameEl.value.trim();
+  const food = FOOD_LOOKUP[name];
+  const qty = Number(customQtyEl.value);
+  const mult = (qty===0 || isNaN(qty)) ? 0 : (qty || 1);
+  if(food){
+    customPEl.value = Math.round(food.p*mult*10)/10;
+    customKEl.value = Math.round(food.k*mult);
+    customFEl.value = Math.round(food.f*mult*10)/10;
+    customMatchHintEl.style.display = '';
+    customMatchHintEl.textContent = `已比對到資料庫:標準份量 ${food.qty}(目前 × ${mult})`;
+  } else {
+    customMatchHintEl.style.display = 'none';
+  }
+}
+customNameEl.addEventListener('input', applyCustomMatch);
+customQtyEl.addEventListener('input', applyCustomMatch);
+
+document.getElementById('customAddBtn').onclick = ()=>{
+  const nameEl = document.getElementById('customName');
+  const pEl = document.getElementById('customP');
+  const kEl = document.getElementById('customK');
+  const fEl = document.getElementById('customF');
+  const name = nameEl.value.trim();
+  const p = Number(pEl.value)||0;
+  const k = Number(kEl.value)||0;
+  const f = Number(fEl.value)||0;
+  if(!name || (p===0 && k===0 && f===0)) return;
+  const log = ensureLog(activeDate);
+  log.custom.push({id: Date.now()+'-'+Math.random().toString(36).slice(2,7), name, p, k, f});
+  nameEl.value=''; pEl.value=''; kEl.value=''; fEl.value=''; customQtyEl.value='1';
+  customMatchHintEl.style.display = 'none';
+  renderAll();
+  saveCloudLog();
+};
+
 function renderStats(){
   const items = getItemsForDate(activeDate);
   const log = ensureLog(activeDate);
@@ -662,6 +1170,8 @@ function renderStats(){
       totalP+=scaled.p; totalK+=scaled.k; totalF+=scaled.f;
     }
   }));
+  const ct = customTotals(log);
+  totalP+=ct.p; totalK+=ct.k; totalF+=ct.f;
   const target = computeTargetsForDate(activeDate);
 
   document.getElementById('proteinNum').textContent = Math.round(totalP*10)/10 + 'g';
@@ -680,18 +1190,55 @@ function renderStats(){
   document.getElementById('waterNum').textContent = log.water;
 
   const d = parseDateStr(activeDate);
+  const rt = resolveType(activeDate);
   document.getElementById('footNote').textContent =
-    `${d.getMonth()+1}/${d.getDate()}(週${WEEKDAY_LABEL[d.getDay()]})・` + (typeOfDate(activeDate)==='train' ? '訓練日菜單' : '休息日菜單');
+    `${d.getMonth()+1}/${d.getDate()}(週${WEEKDAY_LABEL[d.getDay()]})・` + typeLabel(rt) + (rt==='cardio' ? '(套用休息日菜單)' : '菜單');
 }
+
+function renderDayTypeCard(){
+  const log = ensureLog(activeDate);
+  const weekdayType = typeOfDate(activeDate);
+  const effective = log.typeOverride || weekdayType;
+  document.getElementById('daytypeCurrent').textContent = typeLabel(effective);
+  document.getElementById('dtRestBtn').classList.toggle('active', effective==='rest');
+  document.getElementById('dtRestBtn').classList.toggle('rest', true);
+  document.getElementById('dtTrainBtn').classList.toggle('active', effective==='train');
+  document.getElementById('dtTrainBtn').classList.toggle('train', true);
+  document.getElementById('dtCardioBtn').classList.toggle('active', effective==='cardio');
+  document.getElementById('dtCardioBtn').classList.toggle('cardio', true);
+  const isOverridden = !!log.typeOverride && log.typeOverride!==weekdayType;
+  document.getElementById('daytypeDefaultNote').textContent =
+    isOverridden ? `(預設是${typeLabel(weekdayType)},已手動切換)` : '(依星期預設)';
+  document.getElementById('dtResetBtn').style.display = isOverridden ? '' : 'none';
+}
+
+function setDayType(type){
+  const log = ensureLog(activeDate);
+  const weekdayType = typeOfDate(activeDate);
+  log.typeOverride = (type===weekdayType) ? null : type;
+  renderAll();
+  saveCloudLog();
+}
+document.getElementById('dtRestBtn').onclick = ()=> setDayType('rest');
+document.getElementById('dtTrainBtn').onclick = ()=> setDayType('train');
+document.getElementById('dtCardioBtn').onclick = ()=> setDayType('cardio');
+document.getElementById('dtResetBtn').onclick = ()=>{
+  const log = ensureLog(activeDate);
+  log.typeOverride = null;
+  renderAll();
+  saveCloudLog();
+};
 
 function renderAll(){
   renderTabs();
+  renderDayTypeCard();
   renderMeals();
+  renderCustomSection();
   renderStats();
 }
 
 document.getElementById('resetBtn').onclick = ()=>{
-  logs[activeDate] = {checked:new Set(), water:0, alts:{}, portions:{}};
+  logs[activeDate] = {checked:new Set(), water:0, alts:{}, portions:{}, custom:[], typeOverride:null};
   renderAll();
   saveCloudLog();
 };
@@ -716,12 +1263,18 @@ function fillSettingsForm(){
   document.getElementById('set_rest_p').value = SETTINGS.manualTargets.rest.p;
   document.getElementById('set_rest_k').value = SETTINGS.manualTargets.rest.k;
   document.getElementById('set_rest_f').value = SETTINGS.manualTargets.rest.f;
+  document.getElementById('set_cardio_p').value = SETTINGS.manualTargets.cardio.p;
+  document.getElementById('set_cardio_k').value = SETTINGS.manualTargets.cardio.k;
+  document.getElementById('set_cardio_f').value = SETTINGS.manualTargets.cardio.f;
   document.getElementById('auto_train_p').value = SETTINGS.autoMultipliers.train.p;
   document.getElementById('auto_train_k').value = SETTINGS.autoMultipliers.train.k;
   document.getElementById('auto_train_f').value = SETTINGS.autoMultipliers.train.f;
   document.getElementById('auto_rest_p').value = SETTINGS.autoMultipliers.rest.p;
   document.getElementById('auto_rest_k').value = SETTINGS.autoMultipliers.rest.k;
   document.getElementById('auto_rest_f').value = SETTINGS.autoMultipliers.rest.f;
+  document.getElementById('auto_cardio_p').value = SETTINGS.autoMultipliers.cardio.p;
+  document.getElementById('auto_cardio_k').value = SETTINGS.autoMultipliers.cardio.k;
+  document.getElementById('auto_cardio_f').value = SETTINGS.autoMultipliers.cardio.f;
   document.getElementById('set_default_weight').value = SETTINGS.defaultWeight;
 }
 document.getElementById('saveSettingsBtn').onclick = async ()=>{
@@ -738,6 +1291,11 @@ document.getElementById('saveSettingsBtn').onclick = async ()=>{
         k: Number(document.getElementById('set_rest_k').value)||SETTINGS.manualTargets.rest.k,
         f: Number(document.getElementById('set_rest_f').value)||SETTINGS.manualTargets.rest.f,
       },
+      cardio: {
+        p: Number(document.getElementById('set_cardio_p').value)||SETTINGS.manualTargets.cardio.p,
+        k: Number(document.getElementById('set_cardio_k').value)||SETTINGS.manualTargets.cardio.k,
+        f: Number(document.getElementById('set_cardio_f').value)||SETTINGS.manualTargets.cardio.f,
+      },
     },
     autoMultipliers: {
       train: {
@@ -750,12 +1308,17 @@ document.getElementById('saveSettingsBtn').onclick = async ()=>{
         k: Number(document.getElementById('auto_rest_k').value)||SETTINGS.autoMultipliers.rest.k,
         f: Number(document.getElementById('auto_rest_f').value)||SETTINGS.autoMultipliers.rest.f,
       },
+      cardio: {
+        p: Number(document.getElementById('auto_cardio_p').value)||SETTINGS.autoMultipliers.cardio.p,
+        k: Number(document.getElementById('auto_cardio_k').value)||SETTINGS.autoMultipliers.cardio.k,
+        f: Number(document.getElementById('auto_cardio_f').value)||SETTINGS.autoMultipliers.cardio.f,
+      },
     },
     defaultWeight: Number(document.getElementById('set_default_weight').value)||SETTINGS.defaultWeight,
   };
   renderAll();
   refreshWeeklyAndStreak();
-  refreshWeekTable();
+    refreshTrendChart();
   settingsPanel.classList.remove('open');
   if(currentUser){
     try{ await setDoc(doc(db,"dietTrackerUsers",currentUser.uid), {settings:SETTINGS}, {merge:true}); }
@@ -797,16 +1360,19 @@ function renderAuthBar(syncMsg){
 
 function logDocRef(dateStr){ return doc(db, "dietTrackerUsers", currentUser.uid, "logs", dateStr); }
 
+const loadedFromCloud = new Set();
 async function loadLogFor(dateStr){
-  if(!currentUser || logs[dateStr]) { renderAll(); return; }
+  if(!currentUser) { renderAll(); return; }
+  if(loadedFromCloud.has(dateStr)) { renderAll(); return; }
   try{
     const snap = await getDoc(logDocRef(dateStr));
     if(snap.exists()){
       const data = snap.data();
-      logs[dateStr] = {checked:new Set(data.checked||[]), water:data.water||0, alts:data.alts||{}, portions:data.portions||{}};
+      logs[dateStr] = {checked:new Set(data.checked||[]), water:data.water||0, alts:data.alts||{}, portions:data.portions||{}, custom:data.custom||[], typeOverride:data.typeOverride||null};
     } else {
       ensureLog(dateStr);
     }
+    loadedFromCloud.add(dateStr);
   }catch(e){ console.error("讀取當日紀錄失敗:", e); }
   renderAll();
 }
@@ -820,10 +1386,12 @@ async function saveCloudLog(){
       water: log.water,
       alts: log.alts,
       portions: log.portions,
+      custom: log.custom || [],
+      typeOverride: log.typeOverride || null,
     });
     renderAuthBar();
     refreshWeeklyAndStreak();
-    refreshWeekTable();
+    refreshTrendChart();
   }catch(e){
     console.error("寫入雲端資料失敗:", e);
     renderAuthBar({text:'儲存到雲端失敗，請檢查網路或稍後再試', err:true});
@@ -835,12 +1403,13 @@ async function fetchLogRaw(dateStr){
     const snap = await getDoc(logDocRef(dateStr));
     if(!snap.exists()) return null;
     const data = snap.data();
-    return {checked:new Set(data.checked||[]), water:data.water||0, alts:data.alts||{}, portions:data.portions||{}};
+    return {checked:new Set(data.checked||[]), water:data.water||0, alts:data.alts||{}, portions:data.portions||{}, custom:data.custom||[], typeOverride:data.typeOverride||null};
   }catch(e){ return null; }
 }
 
 function totalsFromRaw(raw, dateStr){
-  const items = getItemsForDate(dateStr);
+  const type = (raw && raw.typeOverride) || typeOfDate(dateStr);
+  const items = type==='train' ? TRAIN_ITEMS : REST_ITEMS;
   let p=0,k=0,f=0;
   items.forEach((mg,mi)=> mg.items.forEach((it,ii)=>{
     const key = mi+'-'+ii;
@@ -852,6 +1421,8 @@ function totalsFromRaw(raw, dateStr){
       p+=scaled.p; k+=scaled.k; f+=scaled.f;
     }
   }));
+  const ct = customTotals(raw);
+  p+=ct.p; k+=ct.k; f+=ct.f;
   return {p,k,f};
 }
 
@@ -865,7 +1436,7 @@ async function refreshWeeklyAndStreak(){
     const raw = logs[ds] || await fetchLogRaw(ds);
     if(!raw) continue;
     const totals = totalsFromRaw(raw, ds);
-    const target = computeTargetsForDate(ds);
+    const target = computeTargetsForDate(ds, raw.typeOverride || typeOfDate(ds));
     sumPPct += Math.min(150, totals.p/target.p*100);
     sumKPct += Math.min(150, totals.k/target.k*100);
     count++;
@@ -880,41 +1451,72 @@ async function refreshWeeklyAndStreak(){
     const raw = logs[ds] || await fetchLogRaw(ds);
     if(!raw) break;
     const totals = totalsFromRaw(raw, ds);
-    const target = computeTargetsForDate(ds);
+    const target = computeTargetsForDate(ds, raw.typeOverride || typeOfDate(ds));
     if(totals.p >= target.p) streak++; else break;
   }
   document.getElementById('streakNum').textContent = streak;
 }
 
-async function refreshWeekTable(){
-  const tbody = document.getElementById('weekTableBody');
-  const week = currentWeekDates();
-  const today = todayStr();
-  const rows = [];
-  for(const d of week){
+// ---------- 過去 30 天蛋白質/熱量達成率趨勢圖 ----------
+async function refreshTrendChart(){
+  if(!currentUser) return;
+  const today = new Date();
+  const points = [];
+  for(let i=29;i>=0;i--){
+    const d = new Date(today); d.setDate(today.getDate()-i);
     const ds = toDateStr(d);
-    let raw = logs[ds];
-    if(!raw && currentUser) raw = await fetchLogRaw(ds);
-    const target = computeTargetsForDate(ds);
-    const totals = raw ? totalsFromRaw(raw, ds) : {p:0,k:0,f:0};
-    const water = raw ? raw.water : 0;
-    rows.push({ds, d, target, totals, water});
+    const raw = logs[ds] || await fetchLogRaw(ds);
+    if(!raw){ points.push({ds, d, pPct:null, kPct:null}); continue; }
+    const totals = totalsFromRaw(raw, ds);
+    const target = computeTargetsForDate(ds, raw.typeOverride || typeOfDate(ds));
+    const pPct = Math.min(150, Math.round(totals.p/target.p*100));
+    const kPct = Math.min(150, Math.round(totals.k/target.k*100));
+    points.push({ds, d, pPct, kPct});
   }
-  tbody.innerHTML = rows.map(r=>{
-    const type = typeOfDate(r.ds);
-    const pCls = r.totals.p >= r.target.p ? 'hit' : 'miss';
-    const kCls = r.totals.k >= r.target.k ? 'hit' : 'miss';
-    const fCls = r.totals.f >= r.target.f ? 'hit' : 'miss';
-    return `<tr class="${r.ds===today?'today-row':''}">
-      <td class="dcol">${pad(r.d.getMonth()+1)}/${pad(r.d.getDate())}(${WEEKDAY_LABEL[r.d.getDay()]})</td>
-      <td>${type==='train'?'訓練':'休息'}</td>
-      <td class="${pCls}">${r.totals.p}/${r.target.p}g</td>
-      <td class="${kCls}">${r.totals.k}/${r.target.k}</td>
-      <td class="${fCls}">${r.totals.f}/${r.target.f}g</td>
-      <td>${r.water}ml</td>
-    </tr>`;
-  }).join('');
+  renderTrendChart(points);
 }
+
+function renderTrendChart(points){
+  const svg = document.getElementById('trendChart');
+  const listEl = document.getElementById('trendList');
+  const withData = points.filter(pt=> pt.pPct!==null);
+  if(withData.length===0){
+    svg.innerHTML = '';
+    listEl.textContent = '尚無資料';
+    return;
+  }
+  const w = 600, h = 100, padS = 6, padTop = 8, padBottom = 8;
+  const usableH = h - padTop - padBottom;
+  const maxPct = 150;
+  const step = points.length>1 ? (w-padS*2)/(points.length-1) : 0;
+  const yFor = pct => padTop + usableH - (pct/maxPct)*usableH;
+
+  function linePoints(key){
+    return points.map((pt,i)=>{
+      if(pt[key]===null) return null;
+      const x = padS + step*i;
+      const y = yFor(pt[key]);
+      return x+','+y;
+    }).filter(Boolean).join(' ');
+  }
+  const line100Y = yFor(100);
+
+  svg.innerHTML = `
+    <line x1="${padS}" y1="${line100Y}" x2="${w-padS}" y2="${line100Y}" stroke="var(--ink-soft)" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+    <polyline points="${linePoints('kPct')}" fill="none" stroke="var(--kcal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="${linePoints('pPct')}" fill="none" stroke="var(--protein)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  `;
+
+  const first = withData[0], last = withData[withData.length-1];
+  const avgP = Math.round(withData.reduce((s,pt)=>s+pt.pPct,0)/withData.length);
+  const avgK = Math.round(withData.reduce((s,pt)=>s+pt.kPct,0)/withData.length);
+  listEl.innerHTML = `
+    <span>${pad(first.d.getMonth()+1)}/${pad(first.d.getDate())} ~ ${pad(last.d.getMonth()+1)}/${pad(last.d.getDate())}</span>
+    <span>30天平均 蛋白 ${avgP}% · 熱量 ${avgK}%</span>
+  `;
+}
+
+
 
 function weightDocRef(dateStr){ return doc(db, "dietTrackerUsers", currentUser.uid, "weights", dateStr); }
 
@@ -927,7 +1529,7 @@ document.getElementById('weightSaveBtn').onclick = async ()=>{
     await loadWeights();
     renderAll();
     refreshWeeklyAndStreak();
-    refreshWeekTable();
+    refreshTrendChart();
   }catch(e){ console.error("儲存體重失敗:", e); }
 };
 
@@ -969,32 +1571,278 @@ function renderWeightChart(entries){
   listEl.innerHTML = entries.slice(-6).map(e=>`${e.date.slice(5)}: ${e.weight}kg`).join(' · ');
 }
 
+// ---------- 訓練紀錄(動作/組數/次數/重量) ----------
+const BODY_PART_PRESETS = ['肩+腿','胸+背','手臂','背+肩','有氧','休息'];
+
+// 每個訓練部位的預設動作(依你的課表),點擊可以快速新增/移除
+const PRESET_EXERCISES = {
+  '肩+腿': [
+    {label:'肩', items:['啞鈴肩推','啞鈴飛鳥','槓鈴肩推','坐姿槓鈴肩推','面拉','啞鈴反向飛鳥','反向蝴蝶機','Cable側平舉']},
+    {label:'腿', items:['槓鈴深蹲','硬舉','夾腿','臀推']},
+  ],
+  '胸+背': [
+    {label:'胸', items:['槓鈴臥推','上斜槓鈴臥推','啞鈴臥推','上斜啞鈴臥推','雙槓撐體','蝴蝶機夾胸','Cable下胸夾胸','器械上斜臥推','器械臥推','器械坐姿下胸','器械坐姿下胸推']},
+    {label:'背', items:['槓鈴划船(正)','槓鈴划船(反)','引體向上','坐姿划船','T-bar','反手高位下拉','正手高位下拉','直臂下壓']},
+  ],
+  '手臂': [
+    {label:'手臂', items:['啞鈴彎舉','槓鈴彎舉','三頭繩索下拉','碎顱者','啞鈴頸後臂屈伸','Cable 二頭彎舉','Cable 三頭']},
+  ],
+  '背+肩': [
+    {label:'背', items:['槓鈴划船(正)','槓鈴划船(反)','引體向上','坐姿划船','T-bar','反手高位下拉','正手高位下拉','直臂下壓']},
+    {label:'肩', items:['啞鈴肩推','啞鈴飛鳥','槓鈴肩推','坐姿槓鈴肩推','面拉','啞鈴反向飛鳥','反向蝴蝶機','Cable側平舉']},
+  ],
+  '有氧': [
+    {label:'有氧', items:['跑步機','交叉訓練機','階梯機']},
+  ],
+};
+
+const COMMON_EXERCISES = [...new Set(
+  Object.values(PRESET_EXERCISES).flat().flatMap(g=>g.items)
+)];
+document.getElementById('exerciseNameList').innerHTML =
+  COMMON_EXERCISES.map(n=>`<option value="${n}"></option>`).join('');
+
+// workoutLogs[dateStr] = {bodyPart:'', exercises:[{id,name,sets:[{reps,weight}]}]}
+const workoutLogs = {};
+function ensureWorkoutLog(dateStr){
+  if(!workoutLogs[dateStr]) workoutLogs[dateStr] = {bodyPart:'', exercises:[]};
+  if(!workoutLogs[dateStr].exercises) workoutLogs[dateStr].exercises = [];
+  return workoutLogs[dateStr];
+}
+
+function workoutDocRef(dateStr){ return doc(db, "dietTrackerUsers", currentUser.uid, "workouts", dateStr); }
+
+async function loadWorkoutLogFor(dateStr){
+  if(!currentUser) return;
+  try{
+    const snap = await getDoc(workoutDocRef(dateStr));
+    if(snap.exists()){
+      const data = snap.data();
+      workoutLogs[dateStr] = {bodyPart:data.bodyPart||'', exercises:data.exercises||[]};
+    } else if(!workoutLogs[dateStr]){
+      workoutLogs[dateStr] = {bodyPart:'', exercises:[]};
+    }
+  }catch(e){ console.error("讀取訓練紀錄失敗:", e); }
+  if(!workoutPage || workoutPage.style.display==='none') return;
+  renderWorkoutPage();
+}
+
+async function saveCloudWorkout(){
+  if(!currentUser) return;
+  const log = ensureWorkoutLog(activeDate);
+  try{
+    await setDoc(workoutDocRef(activeDate), {
+      bodyPart: log.bodyPart || '',
+      exercises: log.exercises || [],
+    });
+  }catch(e){ console.error("寫入訓練紀錄失敗:", e); }
+}
+
+async function openWorkoutPage(){
+  if(currentUser && !workoutLogs[activeDate]){
+    await loadWorkoutLogFor(activeDate);
+  }
+  renderWorkoutPage();
+}
+
+function renderWorkoutPage(){
+  const d = parseDateStr(activeDate);
+  document.getElementById('workoutDateLabel').textContent =
+    `${d.getMonth()+1}/${d.getDate()}(週${WEEKDAY_LABEL[d.getDay()]})`;
+
+  const log = ensureWorkoutLog(activeDate);
+
+  const chipsEl = document.getElementById('bodypartChips');
+  const customInput = document.getElementById('bodypartCustomInput');
+  const isPreset = BODY_PART_PRESETS.includes(log.bodyPart);
+  chipsEl.innerHTML = BODY_PART_PRESETS.map(bp=>
+    `<button class="bodypart-chip${log.bodyPart===bp?' active':''}" data-bp="${bp}">${bp}</button>`
+  ).join('') + `<button class="bodypart-chip${(log.bodyPart && !isPreset)?' active':''}" id="bodypartCustomChip">自訂</button>`;
+  chipsEl.querySelectorAll('.bodypart-chip[data-bp]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const bp = btn.getAttribute('data-bp');
+      log.bodyPart = (log.bodyPart===bp) ? '' : bp;
+      renderWorkoutPage();
+      saveCloudWorkout();
+    };
+  });
+  document.getElementById('bodypartCustomChip').onclick = ()=>{
+    customInput.style.display = '';
+    customInput.value = (log.bodyPart && !isPreset) ? log.bodyPart : '';
+    customInput.focus();
+  };
+  customInput.style.display = (log.bodyPart && !isPreset) ? '' : 'none';
+  customInput.onkeydown = (e)=>{
+    if(e.key==='Enter'){
+      log.bodyPart = customInput.value.trim();
+      renderWorkoutPage();
+      saveCloudWorkout();
+    }
+  };
+
+  const presetEl = document.getElementById('presetExercises');
+  const presetGroups = PRESET_EXERCISES[log.bodyPart];
+  if(!presetGroups){
+    presetEl.innerHTML = '';
+  } else {
+    presetEl.innerHTML = presetGroups.map(g=>`
+      <div class="preset-group">
+        <div class="preset-group-label">${g.label}(點擊快速新增/移除)</div>
+        <div class="preset-chips">
+          ${g.items.map(name=>{
+            const added = log.exercises.some(ex=>ex.name===name);
+            return `<button class="preset-chip${added?' added':''}" data-name="${name}">${name}</button>`;
+          }).join('')}
+        </div>
+      </div>
+    `).join('');
+    presetEl.querySelectorAll('.preset-chip').forEach(btn=>{
+      btn.onclick = ()=>{
+        const name = btn.getAttribute('data-name');
+        const existing = log.exercises.find(ex=>ex.name===name);
+        if(existing){
+          log.exercises = log.exercises.filter(ex=>ex.name!==name);
+        } else {
+          log.exercises.push({id: Date.now()+'-'+Math.random().toString(36).slice(2,7), name, sets:[{reps:'', weight:''}]});
+        }
+        renderWorkoutPage();
+        saveCloudWorkout();
+      };
+    });
+  }
+
+  const listEl = document.getElementById('exerciseListContainer');
+  if(log.exercises.length===0){
+    listEl.innerHTML = '<div class="workout-empty">今天還沒有新增任何動作</div>';
+  } else {
+    listEl.innerHTML = '';
+    log.exercises.forEach(ex=>{
+      const card = document.createElement('div');
+      card.className = 'exercise-card';
+      let volume = 0;
+      const setsHtml = ex.sets.map((s,si)=>{
+        volume += (Number(s.reps)||0) * (Number(s.weight)||0);
+        return `
+          <div class="set-row" data-set-i="${si}">
+            <div class="set-idx">${si+1}</div>
+            <input type="number" min="0" step="1" class="set-reps" value="${s.reps??''}" placeholder="次數">
+            <input type="number" min="0" step="0.5" class="set-weight" value="${s.weight??''}" placeholder="重量kg">
+            <button class="set-del" title="刪除這組">✕</button>
+          </div>`;
+      }).join('');
+      card.innerHTML = `
+        <div class="exercise-card-head">
+          <span class="ex-name">${ex.name}</span>
+          <button class="ex-del" title="刪除整個動作">刪除動作</button>
+        </div>
+        <div class="set-labels"><span></span><span>次數</span><span>重量(kg)</span><span></span></div>
+        ${setsHtml}
+        <button class="set-add-btn">＋ 加一組</button>
+        <div class="exercise-vol">這個動作總量:${Math.round(volume)} kg・次</div>
+      `;
+      card.querySelector('.ex-del').onclick = ()=>{
+        log.exercises = log.exercises.filter(e=>e.id!==ex.id);
+        renderWorkoutPage();
+        saveCloudWorkout();
+      };
+      card.querySelector('.set-add-btn').onclick = ()=>{
+        const last = ex.sets[ex.sets.length-1];
+        ex.sets.push({reps: last?last.reps:'', weight: last?last.weight:''});
+        renderWorkoutPage();
+        saveCloudWorkout();
+      };
+      card.querySelectorAll('.set-row').forEach(row=>{
+        const si = Number(row.getAttribute('data-set-i'));
+        row.querySelector('.set-reps').onchange = (e)=>{
+          ex.sets[si].reps = Number(e.target.value)||0;
+          renderWorkoutPage();
+          saveCloudWorkout();
+        };
+        row.querySelector('.set-weight').onchange = (e)=>{
+          ex.sets[si].weight = Number(e.target.value)||0;
+          renderWorkoutPage();
+          saveCloudWorkout();
+        };
+        row.querySelector('.set-del').onclick = ()=>{
+          ex.sets.splice(si,1);
+          renderWorkoutPage();
+          saveCloudWorkout();
+        };
+      });
+      listEl.appendChild(card);
+    });
+  }
+
+  const totalSets = log.exercises.reduce((s,ex)=>s+ex.sets.length,0);
+  const totalVolume = log.exercises.reduce((s,ex)=> s + ex.sets.reduce((s2,st)=> s2+(Number(st.reps)||0)*(Number(st.weight)||0),0), 0);
+  document.getElementById('workoutSummary').innerHTML =
+    `<span>動作數 <b>${log.exercises.length}</b></span><span>總組數 <b>${totalSets}</b></span><span>總訓練量 <b>${Math.round(totalVolume)}</b> kg・次</span>`;
+}
+
+document.getElementById('exerciseAddBtn').onclick = ()=>{
+  const nameEl = document.getElementById('exerciseNameInput');
+  const name = nameEl.value.trim();
+  if(!name) return;
+  const log = ensureWorkoutLog(activeDate);
+  log.exercises.push({id: Date.now()+'-'+Math.random().toString(36).slice(2,7), name, sets:[{reps:'', weight:''}]});
+  nameEl.value = '';
+  renderWorkoutPage();
+  saveCloudWorkout();
+};
+
+document.getElementById('workoutPrevDayBtn').onclick = async ()=>{
+  const d = parseDateStr(activeDate); d.setDate(d.getDate()-1);
+  activeDate = toDateStr(d);
+  const targetMonday = getMonday(d);
+  const nowMonday = getMonday(new Date());
+  weekOffset = Math.round((targetMonday - nowMonday) / (7*24*60*60*1000));
+  await loadLogFor(activeDate);
+  await loadWorkoutLogFor(activeDate);
+  renderAll();
+  renderWorkoutPage();
+};
+document.getElementById('workoutNextDayBtn').onclick = async ()=>{
+  const d = parseDateStr(activeDate); d.setDate(d.getDate()+1);
+  activeDate = toDateStr(d);
+  const targetMonday = getMonday(d);
+  const nowMonday = getMonday(new Date());
+  weekOffset = Math.round((targetMonday - nowMonday) / (7*24*60*60*1000));
+  await loadLogFor(activeDate);
+  await loadWorkoutLogFor(activeDate);
+  renderAll();
+  renderWorkoutPage();
+};
+
 onAuthStateChanged(auth, async (user)=>{
   currentUser = user;
   if(user){
     try{
       const mainSnap = await getDoc(doc(db,"dietTrackerUsers",user.uid));
       if(mainSnap.exists() && mainSnap.data().settings){
-        SETTINGS = Object.assign({}, SETTINGS, mainSnap.data().settings);
+        const cloudSettings = mainSnap.data().settings;
+        SETTINGS = Object.assign({}, SETTINGS, cloudSettings, {
+          manualTargets: Object.assign({}, SETTINGS.manualTargets, cloudSettings.manualTargets),
+          autoMultipliers: Object.assign({}, SETTINGS.autoMultipliers, cloudSettings.autoMultipliers),
+        });
       }
     }catch(e){ console.error("讀取設定失敗:", e); }
     renderAuthBar();
     await loadWeights();
     await loadLogFor(activeDate);
+    await loadWorkoutLogFor(activeDate);
     refreshWeeklyAndStreak();
-    refreshWeekTable();
+    refreshTrendChart();
   } else {
     for(const k in logs) delete logs[k];
+    for(const k in workoutLogs) delete workoutLogs[k];
     weightEntries = [];
     renderAuthBar();
     renderAll();
-    refreshWeekTable();
   }
 });
 
 renderAuthBar();
 renderAll();
-refreshWeekTable();
 </script>
 </body>
 </html>
